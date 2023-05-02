@@ -1,4 +1,4 @@
-import NavBar from '@/components/navbar'
+import NavBar from '@/components/NavBar'
 import { PropsWithChildren } from 'react'
 import { ContentWrapper, MainContainer } from './styles'
 

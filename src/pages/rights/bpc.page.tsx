@@ -1,7 +1,6 @@
-import RightsLayout from '@/components/layouts/rights'
+import RightsLayout from '@/components/layouts/RightsLayout'
 import { NextPageWithLayout } from '@/pages/_app.page'
-import { Asterisk } from '@phosphor-icons/react'
-import { Heading, Text } from '@vagaspcd-ui/react'
+import { Heading, ListItem, Text, UnorderedList } from '@vagaspcd-ui/react'
 import Link from 'next/link'
 import { ReactElement } from 'react'
 import { Header, Main } from './styles'
@@ -50,29 +49,31 @@ const BPC: NextPageWithLayout = () => {
           assistenciais com valor de até 1 (um) salário mínimo, recebido por
           componente do grupo familiar, conforme abaixo:
         </Text>
-        <Text>
-          <Asterisk size={12} /> BPC à Pessoa com Deficiência;
-        </Text>
-        <Text>
-          <Asterisk size={12} /> BPC ao Idoso;
-        </Text>
+        <br />
+        <UnorderedList>
+          <ListItem data-icon="›">BPC à Pessoa com Deficiência;</ListItem>
+          <ListItem data-icon="›">BPC ao Idoso;</ListItem>
+          <ListItem data-icon="›">
+            Qualquer benefício previdenciário no valor de até 1 (um) salário
+            mínimo concedido à Pessoa Idosa a partir dos 65 anos;
+          </ListItem>
+          <ListItem data-icon="›">
+            Aposentadoria por Idade da Pessoa com Deficiência no valor de 1 (um)
+            salário mínimo;
+          </ListItem>
+          <ListItem data-icon="›">
+            Aposentadoria por Tempo de Contribuição da Pessoa com Deficiência no
+            valore de 1 (um) salário mínimo.
+          </ListItem>
+        </UnorderedList>
 
-        <Text>
-          <Asterisk size={12} /> Qualquer benefício previdenciário no valor de
-          até 1 salário mínimo concedido à Pessoa Idosa a partir dos 65 anos;
-        </Text>
-        <Text>
-          <Asterisk size={12} /> Aposentadoria por Idade da Pessoa com
-          Deficiência no valor de 1 salário mínimo;
-        </Text>
-        <Text>
-          <Asterisk size={12} /> Aposentadoria por Tempo de Contribuição da
-          Pessoa com Deficiência no valore de 1 (um) salário mínimo.
-        </Text>
-
+        <br />
         <Text>
           Para maiores informações sobre o BPC, consulte:{' '}
-          <Link href="https://www.gov.br/pt-br/servicos/solicitar-beneficio-assistencial-a-pessoa-com-deficiencia">
+          <Link
+            href="https://www.gov.br/pt-br/servicos/solicitar-beneficio-assistencial-a-pessoa-com-deficiencia"
+            target="_blank"
+          >
             https://www.gov.br/pt-br/servicos/solicitar-beneficio-assistencial-a-pessoa-com-deficiencia
           </Link>
           .
@@ -84,7 +85,9 @@ const BPC: NextPageWithLayout = () => {
         <Text>
           O benefício pode ser solicitado através do site{' '}
           <strong>
-            <Link href="https://meu.inss.gov.br">meu.inss.gov.br</Link>
+            <Link href="https://meu.inss.gov.br" target="_blank">
+              meu.inss.gov.br
+            </Link>
           </strong>
           , aplicativo <strong>MeuINSS</strong> ou através do telefone{' '}
           <strong>135</strong>. A Central 135 funciona de segunda a sábado, das

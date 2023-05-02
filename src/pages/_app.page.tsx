@@ -1,4 +1,5 @@
-import MainLayout from '@/components/layouts/main'
+import MainLayout from '@/components/layouts/MainLayout'
+import { AuthProvider } from '@/contexts/AuthContexts'
 import { globalStyles } from '@/styles/global'
 import { NextPage } from 'next'
 import type { AppProps } from 'next/app'
@@ -17,5 +18,9 @@ type AppPropsWithLayout = AppProps & {
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page)
 
-  return <MainLayout>{getLayout(<Component {...pageProps} />)}</MainLayout>
+  return (
+    <AuthProvider>
+      <MainLayout>{getLayout(<Component {...pageProps} />)}</MainLayout>
+    </AuthProvider>
+  )
 }

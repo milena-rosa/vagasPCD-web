@@ -38,10 +38,18 @@ export default function CandidateHome() {
 
       <HeaderContainer>
         <Header>
-          <Button variant="primary" size="sm">
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => router.push('/login')}
+          >
             Faça seu Login
           </Button>
-          <Button variant="primary" size="sm">
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => router.push('/candidate/register')}
+          >
             Cadastre-se
           </Button>
         </Header>
@@ -83,22 +91,23 @@ export default function CandidateHome() {
             comunicação entre empresas que tem a obrigação legal de contratação
             de Pessoas com Deficiência (PcD). Mais especificamente:
           </Text>
+          <br />
           <UnorderedList>
-            <ListItem>
+            <ListItem data-icon="›">
               Realizar a integração entre empresas, o Instituto Nacional do
               Seguro Social (INSS) e Pessoas com Deficiência (PcD);
             </ListItem>
-            <ListItem>
+            <ListItem data-icon="›">
               Aumentar o número de contratações de PcD&rsquo;s;
             </ListItem>
-            <ListItem>
+            <ListItem data-icon="›">
               Estabelecer parcerias e Acordos de Cooperação Técnica entre INSS e
               empresas;
             </ListItem>
-            <ListItem>
+            <ListItem data-icon="›">
               Estabelecer novas oportunidades de Reabilitação Profissional;
             </ListItem>
-            <ListItem>
+            <ListItem data-icon="›">
               Reduzir custos decorrentes de multas das empresas por não
               contratação de PcD dentro das cotas definidas lei; entre outras.
             </ListItem>

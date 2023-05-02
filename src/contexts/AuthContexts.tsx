@@ -1,10 +1,10 @@
 import { apiVagasPCD } from '@/libs/axios'
 import { PropsWithChildren, createContext } from 'react'
 
-type User = {
-  name: string
-  email: string
-}
+// type User = {
+//   name: string
+//   email: string
+// }
 
 type SignInData = {
   email: string
@@ -13,7 +13,7 @@ type SignInData = {
 
 type AuthContextData = {
   isAuthenticated: boolean
-  user: User
+  // user: User
   signIn: (data: SignInData) => Promise<void>
 }
 
@@ -23,7 +23,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const isAuthenticated = false
 
   async function signIn({ email, password }: SignInData) {
-    const response = await apiVagasPCD.post('/sessions', {
+    await apiVagasPCD.post('/sessions', {
       email,
       password,
     })

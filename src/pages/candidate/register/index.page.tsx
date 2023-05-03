@@ -1,4 +1,5 @@
-import { apiCEP, apiVagasPCD } from '@/libs/axios'
+import { apiCEP } from '@/services/apiCEP'
+import { apiVagasPCD } from '@/services/apiVagasPCD'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeft, MagnifyingGlass } from '@phosphor-icons/react'
 import { Button, Text, TextArea, TextInput } from '@vagaspcd-ui/react'

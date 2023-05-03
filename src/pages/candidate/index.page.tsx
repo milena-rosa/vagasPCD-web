@@ -1,4 +1,6 @@
+import { useAuth } from '@/contexts/AuthContext'
 import {
+  DoorOpen,
   MagnifyingGlass,
   RocketLaunch,
   WheelchairMotion,
@@ -29,6 +31,7 @@ import {
 
 export default function CandidateHome() {
   const router = useRouter()
+  const { isAuthenticated, signOut } = useAuth()
 
   return (
     <>
@@ -38,20 +41,29 @@ export default function CandidateHome() {
 
       <HeaderContainer>
         <Header>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => router.push('/login')}
-          >
-            Faça seu Login
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => router.push('/candidate/register')}
-          >
-            Cadastre-se
-          </Button>
+          {!isAuthenticated ? (
+            <>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => router.push('/login')}
+              >
+                Faça seu Login
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => router.push('/candidate/register')}
+              >
+                Cadastre-se
+              </Button>
+            </>
+          ) : (
+            <Button size="sm" onClick={() => signOut()}>
+              <DoorOpen />
+              Sair
+            </Button>
+          )}
         </Header>
       </HeaderContainer>
 
@@ -132,3 +144,23 @@ export default function CandidateHome() {
     </>
   )
 }
+
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const apiClient = getAPIClient(ctx)
+//   const { 'vagasPCD.token': token } = parseCookies(ctx)
+
+//   if (!token) {
+//     return {
+//       redirect: {
+//         destination: '/',
+//         permanent: false,
+//       },
+//     }
+//   }
+
+//   // await apiClient.get('/...')
+
+//   return {
+//     props: {},
+//   }
+// }

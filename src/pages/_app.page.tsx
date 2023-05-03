@@ -1,5 +1,5 @@
 import MainLayout from '@/components/layouts/MainLayout'
-import { AuthProvider } from '@/contexts/AuthContexts'
+import { AuthProvider } from '@/contexts/AuthContext'
 import { globalStyles } from '@/styles/global'
 import { NextPage } from 'next'
 import type { AppProps } from 'next/app'

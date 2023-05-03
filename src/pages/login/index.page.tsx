@@ -1,4 +1,4 @@
-import { apiVagasPCD } from '@/libs/axios'
+import { Role, useAuth } from '@/contexts/AuthContext'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   ArrowLeft,
@@ -34,6 +34,7 @@ export type LoginFormData = z.infer<typeof loginFormSchema>
 
 export default function Login() {
   const router = useRouter()
+  const { signIn } = useAuth()
 
   const {
     register,
@@ -43,17 +44,11 @@ export default function Login() {
     resolver: zodResolver(loginFormSchema),
   })
 
-  async function handleLogin(data: LoginFormData) {
+  async function handleLogin({ email, password }: LoginFormData) {
     try {
-      const response = await apiVagasPCD.post('/sessions', {
-        email: data.email,
-        password: data.password,
-      })
+      await signIn({ role: Role.CANDIDATE, email, password })
 
-      const { token, role } = response.data
-      // TODO: do the trick
-      console.log(token)
-      await router.push(`/${role.toLowerCase()}`)
+      // await router.push(`/${role.toLowerCase()}`)
     } catch (error) {
       if (error instanceof AxiosError && error?.response?.data?.message) {
         alert(error.response.data.message)

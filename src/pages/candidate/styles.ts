@@ -11,7 +11,7 @@ export const Header = styled('header', {
   backgroundColor: '$gray400',
   display: 'flex',
   justifyContent: 'flex-end',
-  padding: '$2',
+  padding: '$2 $4',
   width: '75%',
 
   [`> ${Button}`]: {

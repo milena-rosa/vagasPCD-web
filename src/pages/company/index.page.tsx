@@ -1,4 +1,5 @@
-import { RocketLaunch, WheelchairMotion } from '@phosphor-icons/react'
+import { Role, useAuth } from '@/contexts/AuthContext'
+import { DoorOpen, RocketLaunch, WheelchairMotion } from '@phosphor-icons/react'
 import {
   Button,
   Heading,
@@ -23,6 +24,7 @@ import {
 
 export default function CompanyHome() {
   const router = useRouter()
+  const { isAuthenticated, signOut } = useAuth()
 
   return (
     <>
@@ -32,12 +34,29 @@ export default function CompanyHome() {
 
       <HeaderContainer>
         <Header>
-          <Button variant="primary" size="sm">
-            Faça seu Login
-          </Button>
-          <Button variant="primary" size="sm">
-            Cadastre-se
-          </Button>
+          {!isAuthenticated ? (
+            <>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => router.push(`/login?role=${Role.COMPANY}`)}
+              >
+                Faça seu Login
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => router.push('/company/register')}
+              >
+                Cadastre-se
+              </Button>
+            </>
+          ) : (
+            <Button size="sm" onClick={() => signOut()}>
+              <DoorOpen />
+              Sair
+            </Button>
+          )}
         </Header>
       </HeaderContainer>
 

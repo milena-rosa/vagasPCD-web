@@ -10,7 +10,6 @@ import {
   WheelchairMotion,
 } from '@phosphor-icons/react'
 import { Button, Heading, Text, TextInput } from '@vagaspcd-ui/react'
-import { AxiosError } from 'axios'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -27,13 +26,16 @@ import {
 
 export const loginFormSchema = z.object({
   email: z.string().email({ message: 'Digite um e-mail válido.' }),
-  password: z.string(),
+  password: z
+    .string({ required_error: 'Senha obrigatória.' })
+    .min(6, { message: 'Digite um valor válido.' }),
 })
 
 export type LoginFormData = z.infer<typeof loginFormSchema>
 
 export default function Login() {
   const router = useRouter()
+  const { role } = router.query
   const { signIn } = useAuth()
 
   const {
@@ -45,17 +47,11 @@ export default function Login() {
   })
 
   async function handleLogin({ email, password }: LoginFormData) {
-    try {
-      await signIn({ role: Role.CANDIDATE, email, password })
-
-      // await router.push(`/${role.toLowerCase()}`)
-    } catch (error) {
-      if (error instanceof AxiosError && error?.response?.data?.message) {
-        alert(error.response.data.message)
-        return
-      }
-      console.error(error)
-    }
+    await signIn({
+      email,
+      password,
+      role: role ? `${role}` : Role.CANDIDATE,
+    })
   }
 
   return (

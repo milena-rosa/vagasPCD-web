@@ -1,4 +1,5 @@
 import { globalCss } from '@vagaspcd-ui/react'
+import 'react-toastify/dist/ReactToastify.css'
 
 export const globalStyles = globalCss({
   '*': {

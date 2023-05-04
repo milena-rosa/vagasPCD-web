@@ -1,20 +1,23 @@
-import { apiCEP } from '@/services/apiCEP'
 import { apiVagasPCD } from '@/services/apiVagasPCD'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeft, MagnifyingGlass } from '@phosphor-icons/react'
-import { Button, Text, TextArea, TextInput } from '@vagaspcd-ui/react'
+import { Button, Text, TextInput } from '@vagaspcd-ui/react'
 import { AxiosError } from 'axios'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useIMask } from 'react-imask'
-import { toast } from 'react-toastify'
 import Header from './components/Header/index.page'
+
+import { CompanyApiData, apiCNPJ } from '@/services/apiCNPJ'
+import { formatPhoneNumber } from '@/utils/formatPhoneNumber'
+import { formatZipCode } from '@/utils/formatZipCode'
+import { toPascalCase } from '@/utils/toPascalCase'
+import { toast } from 'react-toastify'
 import {
-  AddressType,
-  RegisterCandidateFormData,
-  registerCandidateFormSchema,
+  RegisterCompanyFormData,
+  registerCompanyFormSchema,
 } from './registerSchemas'
 import {
   ButtonBox,
@@ -33,83 +36,59 @@ export default function RegisterCandidate() {
     register,
     handleSubmit,
     setValue,
-    setError,
     formState: { errors, isSubmitting },
-  } = useForm<RegisterCandidateFormData>({
-    resolver: zodResolver(registerCandidateFormSchema),
+  } = useForm<RegisterCompanyFormData>({
+    resolver: zodResolver(registerCompanyFormSchema),
   })
 
-  const { ref: zipCodeRef, unmaskedValue: zipCode } = useIMask({
-    mask: '00000-000',
+  const { ref: cnpjRef, unmaskedValue: cnpjValue } = useIMask({
+    mask: '00.000.000/0000-00',
   })
 
-  const { ref: phoneRef } = useIMask(
-    { mask: '(00) 000 000 000' },
-    {
-      onComplete(_, maskRef) {
-        setValue('phone', maskRef.unmaskedValue)
-      },
-    },
-  )
-
-  async function handleFindAddress(event: React.MouseEvent, zipCode: string) {
+  async function handleFindCompanyInfo(event: React.MouseEvent, cnpj: string) {
     event.preventDefault()
 
     try {
-      const response = await apiCEP.get<AddressType>(`/cep/v2/${zipCode}`)
-      setValue('zipCode', zipCode)
-      setValue('street', response.data.street)
-      setValue('neighborhood', response.data.neighborhood)
-      setValue('city', response.data.city)
-      setValue('state', response.data.state)
+      const response = await apiCNPJ.get<CompanyApiData>(cnpj)
+
+      setValue('cnpj', cnpj)
+      setValue('name', toPascalCase(response.data.razao_social))
+      setValue('zipCode', formatZipCode(response.data.cep))
+      setValue('street', toPascalCase(response.data.logradouro))
+      setValue('number', response.data.numero)
+      setValue('complement', response.data.complemento)
+      setValue('city', toPascalCase(response.data.municipio))
+      setValue('state', response.data.uf)
+      setValue('phone', formatPhoneNumber(response.data.ddd_telefone_1))
     } catch (error) {
-      setError('zipCode', { message: 'CEP inválido', type: 'validate' })
-      toast.error((error as Error).message, { autoClose: 3000 })
+      toast.error('CNPJ não encontrado', { autoClose: 3000 })
+      console.error(error)
     }
   }
 
   async function handleRegister({
-    name,
-    email,
+    cnpj,
     password,
-    phone,
-    zipCode,
-    street,
-    number,
-    complement,
-    neighborhood,
-    city,
-    state,
-    linkedin,
-    educationalBackground,
-    professionalExperience,
-    skills,
-  }: RegisterCandidateFormData) {
+    email,
+  }: RegisterCompanyFormData) {
     try {
-      await apiVagasPCD.post('/candidates', {
-        name,
+      await apiVagasPCD.post('/companies', {
+        cnpj,
         email,
         password,
-        phone,
-        zipCode,
-        street,
-        number,
-        complement,
-        neighborhood,
-        city,
-        state,
-        linkedin,
-        educationalBackground,
-        professionalExperience,
-        skills,
       })
-      await router.push('/candidate')
+      await router.push('/company')
     } catch (error) {
       if (error instanceof AxiosError && error?.response?.data?.message) {
+        if (error.status === 409) {
+          toast.error('E-mail já cadastrado', { autoClose: 3000 })
+        }
         toast.error(error.response.data.message, { autoClose: 3000 })
         return
       }
-      toast.error((error as Error).message, { autoClose: 3000 })
+      toast.error('Algo deu errado. Por favor, tente novamente.', {
+        autoClose: 3000,
+      })
     }
   }
 
@@ -123,13 +102,6 @@ export default function RegisterCandidate() {
           <Header />
 
           <Form as="form" onSubmit={handleSubmit(handleRegister)}>
-            <label>
-              <Text>Nome completo</Text>
-              <TextInput placeholder="Nome completo" {...register('name')} />
-              {errors.name && (
-                <FormError size="sm">{errors.name.message}</FormError>
-              )}
-            </label>
             <label>
               <Text>E-mail</Text>
               <TextInput
@@ -167,35 +139,64 @@ export default function RegisterCandidate() {
             </label>
             <Row>
               <label>
-                <Text>CEP</Text>
+                <Text>CNPJ</Text>
                 <TextInput
-                  placeholder="CEP"
-                  {...register('zipCode')}
-                  ref={zipCodeRef}
+                  placeholder="CNPJ"
+                  {...register('cnpj')}
+                  ref={cnpjRef}
                 />
               </label>
               <SearchButton
-                onClick={(event) => handleFindAddress(event, zipCode)}
+                type="button"
+                onClick={(event) => handleFindCompanyInfo(event, cnpjValue)}
               >
                 <MagnifyingGlass />
               </SearchButton>
             </Row>
-            {errors.zipCode && (
-              <FormError size="sm">{errors.zipCode.message}</FormError>
+            {errors.cnpj && (
+              <FormError size="sm">{errors.cnpj.message}</FormError>
             )}
+
+            <label>
+              <Text>Nome da empresa</Text>
+              <TextInput
+                disabled
+                placeholder="Nome da empresa"
+                {...register('name')}
+              />
+            </label>
+            <Row>
+              <label>
+                <Text>CEP</Text>
+                <TextInput
+                  disabled
+                  placeholder="CEP"
+                  {...register('zipCode')}
+                />
+                {errors.zipCode && (
+                  <FormError size="sm">{errors.zipCode.message}</FormError>
+                )}
+              </label>
+            </Row>
             <label>
               <Text>Rua</Text>
               <TextInput disabled placeholder="Rua" {...register('street')} />
             </label>
             <Row>
               <label>
-                <Text>Bairro</Text>
+                <Text>Número</Text>
+                <TextInput placeholder="Número" {...register('number')} />
+              </label>
+              <label>
+                <Text>Complemento</Text>
                 <TextInput
                   disabled
-                  placeholder="Bairro"
-                  {...register('neighborhood')}
+                  placeholder="Complemento"
+                  {...register('complement')}
                 />
               </label>
+            </Row>
+            <Row>
               <label>
                 <Text>Cidade</Text>
                 <TextInput
@@ -215,63 +216,18 @@ export default function RegisterCandidate() {
             </Row>
             <Row>
               <label>
-                <Text>Número</Text>
-                <TextInput placeholder="Número" {...register('number')} />
-              </label>
-
-              <label>
-                <Text>Complemento</Text>
+                <Text>Telefone</Text>
                 <TextInput
-                  placeholder="Complemento"
-                  {...register('complement')}
-                />
-              </label>
-            </Row>
-            {errors.number && (
-              <FormError size="sm">{errors.number.message}</FormError>
-            )}
-            <Row>
-              <label>
-                <Text>Celular</Text>
-                <TextInput
-                  placeholder="Celular"
+                  disabled
+                  placeholder="Telefone"
                   {...register('phone')}
-                  ref={phoneRef}
                 />
                 {errors.phone && (
                   <FormError size="sm">{errors.phone.message}</FormError>
                 )}
               </label>
             </Row>
-            <label>
-              <Text>LinkedIn</Text>
-              <TextInput
-                prefix="https://linkedin.com/in/"
-                placeholder="usuario-linkedin"
-                {...register('linkedin')}
-              />
-            </label>
-            <label>
-              <Text>Experiências Profissionais</Text>
-              <TextArea
-                placeholder="Descreva suas experiências profissionais"
-                {...register('professionalExperience')}
-              />
-            </label>
-            <label>
-              <Text>Educação</Text>
-              <TextArea
-                placeholder="Escreva sobre sua educação. Coloque informações sobre cursos, certificados, graduação etc."
-                {...register('educationalBackground')}
-              />
-            </label>
-            <label>
-              <Text>Habilidades e Competências</Text>
-              <TextArea
-                placeholder="Habilidades e competências"
-                {...register('skills')}
-              />
-            </label>
+
             <ButtonBox>
               <Button type="button" onClick={() => router.back()}>
                 <ArrowLeft />

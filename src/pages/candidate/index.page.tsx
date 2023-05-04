@@ -1,4 +1,4 @@
-import { useAuth } from '@/contexts/AuthContext'
+import { Role, useAuth } from '@/contexts/AuthContext'
 import {
   DoorOpen,
   MagnifyingGlass,
@@ -46,7 +46,7 @@ export default function CandidateHome() {
               <Button
                 variant="primary"
                 size="sm"
-                onClick={() => router.push('/login')}
+                onClick={() => router.push(`/login?role=${Role.CANDIDATE}`)}
               >
                 Faça seu Login
               </Button>

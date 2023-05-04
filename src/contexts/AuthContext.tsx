@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { apiVagasPCD } from '@/services/apiVagasPCD'
+import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import {
@@ -9,6 +10,7 @@ import {
   useEffect,
   useState,
 } from 'react'
+import { toast } from 'react-toastify'
 
 export enum Role {
   CANDIDATE = 'candidates',
@@ -107,6 +109,15 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
       router.push(`/${user.role.toLowerCase()}`)
     } catch (error) {
+      if (error instanceof AxiosError && error?.response?.data?.message) {
+        if (error.status === 404) {
+          toast.error('Verifique as informações e tente novamente.', {
+            autoClose: 3000,
+          })
+        }
+        toast.error(error.response.data.message, { autoClose: 3000 })
+        return
+      }
       console.error(error)
     }
   }

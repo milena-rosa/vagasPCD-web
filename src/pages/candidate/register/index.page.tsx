@@ -2,7 +2,7 @@ import { apiCEP } from '@/services/apiCEP'
 import { apiVagasPCD } from '@/services/apiVagasPCD'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeft, MagnifyingGlass } from '@phosphor-icons/react'
-import { Button, Text, TextArea, TextInput } from '@vagaspcd-ui/react'
+import { Button, Heading, Text, TextArea, TextInput } from '@vagaspcd-ui/react'
 import { AxiosError } from 'axios'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -10,7 +10,6 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useIMask } from 'react-imask'
 import { toast } from 'react-toastify'
-import Header from './components/Header/index.page'
 import {
   AddressType,
   RegisterCandidateFormData,
@@ -118,9 +117,18 @@ export default function RegisterCandidate() {
       <Head>
         <title>vagasPCD | Cadastro de Candidato</title>
       </Head>
+
       <MainPage>
         <Container>
-          <Header />
+          <Heading size="md">Formulário de Inscrição</Heading>
+          <Text size="sm">
+            Preencha com todas as suas informações pessoais, profissionais e
+            educacionais.
+          </Text>
+          <Text size="sm">
+            Lembre-se de impressionar e colocar as suas melhores habilidades e
+            competências!
+          </Text>
 
           <Form as="form" onSubmit={handleSubmit(handleRegister)}>
             <label>

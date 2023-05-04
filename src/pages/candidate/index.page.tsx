@@ -1,6 +1,6 @@
-import { Role, useAuth } from '@/contexts/AuthContext'
+import Header from '@/components/Header'
+import { Role } from '@/contexts/AuthContext'
 import {
-  DoorOpen,
   MagnifyingGlass,
   RocketLaunch,
   WheelchairMotion,
@@ -19,8 +19,6 @@ import { useRouter } from 'next/router'
 import {
   BlurbSection,
   GoalsTextBox,
-  Header,
-  HeaderContainer,
   JobTypesBox,
   MainSection,
   RightsLinkBox,
@@ -31,7 +29,6 @@ import {
 
 export default function CandidateHome() {
   const router = useRouter()
-  const { isAuthenticated, signOut } = useAuth()
 
   return (
     <>
@@ -39,33 +36,10 @@ export default function CandidateHome() {
         <title>vagasPCD | Candidato</title>
       </Head>
 
-      <HeaderContainer>
-        <Header>
-          {!isAuthenticated ? (
-            <>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() => router.push(`/login?role=${Role.CANDIDATE}`)}
-              >
-                Faça seu Login
-              </Button>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() => router.push('/candidate/register')}
-              >
-                Cadastre-se
-              </Button>
-            </>
-          ) : (
-            <Button size="sm" onClick={() => signOut()}>
-              <DoorOpen />
-              Sair
-            </Button>
-          )}
-        </Header>
-      </HeaderContainer>
+      <Header
+        authenticateRoute={`/login?role=${Role.CANDIDATE}`}
+        registerRoute="/candidate/register"
+      />
 
       <SearchSection>
         <SearchSectionTitle>

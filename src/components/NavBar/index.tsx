@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { Container, Nav, TabTrigger } from './styles'
 
@@ -8,7 +9,10 @@ const MENU_LIST = [
 ]
 
 export default function NavBar() {
-  const [activeItem, setActiveItem] = useState('candidate')
+  const router = useRouter()
+  const [activeItem, setActiveItem] = useState(() =>
+    router.pathname.replace(/[^a-zA-Z0-9]/g, ''),
+  )
 
   return (
     <Container>

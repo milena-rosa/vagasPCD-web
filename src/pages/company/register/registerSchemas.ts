@@ -4,6 +4,8 @@ export const registerCompanyFormSchema = z
   .object({
     email: z.string().email({ message: 'Digite um e-mail válido.' }),
     cnpj: z.string({ required_error: 'Digite um CNPJ válido.' }),
+    linkedin: z.string({ required_error: 'Digite um valor válido' }),
+    about: z.string({ required_error: 'Digite um valor válido' }),
     password: z
       .string()
       .min(6, { message: 'A senha deve ter no mínimo 6 caracteres.' }),
@@ -23,14 +25,3 @@ export const registerCompanyFormSchema = z
   })
 
 export type RegisterCompanyFormData = z.infer<typeof registerCompanyFormSchema>
-
-export type GeneratedInfoType = {
-  name: string
-  phone: string
-  street: string
-  number: string
-  complement: string
-  city: string
-  state: string
-  zipCode: string
-}

@@ -70,6 +70,15 @@ type AuthContextData = {
   signOut: () => void
 }
 
+const PAGE_REDIRECT = {
+  [Role.CANDIDATE]: { signIn: '/candidate/dashboard', signOut: '/candidate ' },
+  [Role.COMPANY]: { signIn: '/company/dashboard', signOut: '/company' },
+  [Role.GOVERNMENT]: {
+    signIn: '/government/dashboard',
+    signOut: '/government',
+  },
+}
+
 const AuthContext = createContext({} as AuthContextData)
 
 export function AuthProvider({ children }: PropsWithChildren) {
@@ -78,10 +87,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const isAuthenticated = !!user
 
   useEffect(() => {
-    const { 'vagasPCD.token': token } = parseCookies()
+    const { 'vagasPCD.token': token, 'vagasPCD.role': role } = parseCookies()
 
     if (token) {
-      apiVagasPCD.get(`/candidates/recover?token=${token}`).then((response) => {
+      apiVagasPCD.get(`/${role}/recover?token=${token}`).then((response) => {
         setUser(response.data.candidate)
       })
     }
@@ -102,12 +111,15 @@ export function AuthProvider({ children }: PropsWithChildren) {
       setCookie(undefined, 'vagasPCD.token', token, {
         maxAge: 60 * 60 * 1, // 1 hour
       })
+      setCookie(undefined, 'vagasPCD.role', role, {
+        maxAge: 60 * 60 * 1, // 1 hour
+      })
 
       apiVagasPCD.defaults.headers.Authorization = `Bearer ${token}`
 
       setUser(user)
 
-      router.push(`/${user.role.toLowerCase()}`)
+      router.push(PAGE_REDIRECT[role as Role].signIn)
     } catch (error) {
       if (error instanceof AxiosError && error?.response?.data?.message) {
         if (error.status === 404) {
@@ -123,8 +135,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }
 
   async function signOut() {
+    const { 'vagasPCD.role': role } = parseCookies()
+
     destroyCookie(undefined, 'vagasPCD.token')
+    destroyCookie(undefined, 'vagasPCD.role')
     setUser(null)
+
+    router.push(PAGE_REDIRECT[role as Role].signOut)
   }
 
   return (

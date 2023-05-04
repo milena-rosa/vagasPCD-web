@@ -1,14 +1,13 @@
 import { apiVagasPCD } from '@/services/apiVagasPCD'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeft, MagnifyingGlass } from '@phosphor-icons/react'
-import { Button, Text, TextInput } from '@vagaspcd-ui/react'
+import { Button, Heading, Text, TextArea, TextInput } from '@vagaspcd-ui/react'
 import { AxiosError } from 'axios'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useIMask } from 'react-imask'
-import Header from './components/Header/index.page'
 
 import { CompanyApiData, apiCNPJ } from '@/services/apiCNPJ'
 import { formatPhoneNumber } from '@/utils/formatPhoneNumber'
@@ -99,7 +98,8 @@ export default function RegisterCandidate() {
       </Head>
       <MainPage>
         <Container>
-          <Header />
+          <Heading size="md">Formulário para Cadastro</Heading>
+          <Text size="sm">Preencha com todas as informações necessárias!</Text>
 
           <Form as="form" onSubmit={handleSubmit(handleRegister)}>
             <label>
@@ -112,6 +112,23 @@ export default function RegisterCandidate() {
             </label>
             {errors.email && (
               <FormError size="sm">{errors.email.message}</FormError>
+            )}
+            <label>
+              <Text>LinkedIn</Text>
+              <TextInput placeholder="LinkedIn" {...register('linkedin')} />
+            </label>
+            {errors.linkedin && (
+              <FormError size="sm">{errors.linkedin.message}</FormError>
+            )}
+            <label>
+              <Text>Sobre a empresa</Text>
+              <TextArea
+                placeholder="Escreva sobre a empresa e sua política. Esse texto aparecerá na descrição das vagas para os candidatos."
+                {...register('about')}
+              />
+            </label>
+            {errors.about && (
+              <FormError size="sm">{errors.about.message}</FormError>
             )}
             <label>
               <Text>Senha</Text>

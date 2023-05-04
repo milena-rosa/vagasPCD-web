@@ -1,30 +1,5 @@
 import { Button, Heading, ListItem, Text, styled } from '@vagaspcd-ui/react'
 
-export const HeaderContainer = styled('div', {
-  backgroundColor: '$gray800',
-  display: 'flex',
-  justifyContent: 'center',
-})
-
-export const Header = styled('header', {
-  alignItems: 'center',
-  backgroundColor: '$gray400',
-  display: 'flex',
-  justifyContent: 'flex-end',
-  padding: '$2 $4',
-  width: '75%',
-
-  [`> ${Button}`]: {
-    backgroundColor: '$black',
-    border: '1px solid $white',
-
-    '&:first-child': {
-      backgroundColor: 'transparent',
-      marginRight: '$3',
-    },
-  },
-})
-
 export const SearchSection = styled('section', {
   alignItems: 'center',
   backgroundColor: '$primary',

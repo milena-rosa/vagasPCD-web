@@ -1,30 +1,5 @@
 import { styled } from '@vagaspcd-ui/react'
 
-export const HeaderContainer = styled('div', {
-  backgroundColor: '$gray800',
-  display: 'flex',
-  justifyContent: 'center',
-})
-
-export const Header = styled('header', {
-  alignItems: 'center',
-  backgroundColor: '$gray400',
-  display: 'flex',
-  justifyContent: 'flex-end',
-  padding: '$2',
-  width: '75%',
-
-  '> button': {
-    backgroundColor: '$black',
-    border: '$white solid 2px',
-
-    '&:first-child': {
-      backgroundColor: 'transparent',
-      marginRight: '$3',
-    },
-  },
-})
-
 export const HeroSection = styled('section', {
   alignItems: 'center',
   backgroundColor: '$primary',

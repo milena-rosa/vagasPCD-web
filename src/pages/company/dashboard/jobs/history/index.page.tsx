@@ -9,7 +9,7 @@ import DashboardSideNav from '../../components/DashboardSideNav'
 import JobList, { Job } from '../../components/JobList'
 import { Container, MainSection } from '../../styles'
 
-export default function OpenJobs() {
+export default function JobsHistory() {
   const [data, setData] = useState<Job[]>([])
 
   useEffect(() => {
@@ -21,13 +21,13 @@ export default function OpenJobs() {
   }, [])
 
   useEffect(() => {
-    apiVagasPCD.get('/jobs/open').then((response) => setData(response.data))
+    apiVagasPCD.get('/jobs/history').then((response) => setData(response.data))
   }, [])
 
   return (
     <>
       <Head>
-        <title>vagasPCD | Cadastro de Vaga</title>
+        <title>vagasPCD | Histórico de Vaga</title>
       </Head>
 
       <Header />
@@ -36,7 +36,7 @@ export default function OpenJobs() {
         <DashboardSideNav />
 
         <MainSection>
-          <Heading size="md">Vagas abertas</Heading>
+          <Heading size="md">Histórico de vagas</Heading>
 
           <JobList data={data} />
         </MainSection>

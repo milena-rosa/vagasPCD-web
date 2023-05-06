@@ -1,4 +1,3 @@
-import { apiVagasPCD } from '@/services/apiVagasPCD'
 import { paginate } from '@/utils/paginate'
 import {
   CaretDoubleLeft,
@@ -15,7 +14,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { Select } from '@vagaspcd-ui/react'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import JobItem from '../JobItem'
 import JobTitleFilter from '../JobTitleFilter'
@@ -38,6 +37,7 @@ export type Job = {
   location: string
   disability_type: string
   created_at: string
+  closed_at: string
 }
 
 export const columns: ColumnDef<Job, any>[] = [
@@ -53,17 +53,14 @@ export const columns: ColumnDef<Job, any>[] = [
   { accessorKey: 'created_at' },
 ]
 
-export default function JobList() {
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [data, setData] = useState<Job[]>([])
+interface JobListProps {
+  data: Job[]
+  isHistory?: boolean
+}
 
-  useEffect(() => {
-    const loadOpenJobs = async () => {
-      const response = await apiVagasPCD.get('/jobs/open')
-      setData(response.data)
-    }
-    loadOpenJobs()
-  }, [])
+export default function JobList({ data, isHistory = false }: JobListProps) {
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  // const [data, setData] = useState<Job[]>([])
 
   const handleFilterChange = <T,>(id: string, value: T | undefined) => {
     const otherFilters = columnFilters.filter((rule) => rule.id !== id)
@@ -105,7 +102,7 @@ export default function JobList() {
     <div>
       <JobTitleFilter handleChange={handleTitleFilter} />
       {table.getRowModel().rows.map((row) => (
-        <JobItem key={row.id} id={row.id} job={row.original} />
+        <JobItem key={row.id} job={row.original} isHistory={isHistory} />
       ))}
 
       <PaginationContainer>

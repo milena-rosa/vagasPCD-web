@@ -3,11 +3,11 @@ import { Job } from '../JobList'
 import { GridArea, JobGrid } from './styles'
 
 interface JobItemProps {
-  id: string
   job: Job
+  isHistory?: boolean
 }
 
-export default function JobItem({ id, job }: JobItemProps) {
+export default function JobItem({ job, isHistory }: JobItemProps) {
   return (
     <JobGrid>
       <GridArea area="title">
@@ -53,6 +53,14 @@ export default function JobItem({ id, job }: JobItemProps) {
           {job.linkedin}
         </Link>
       </GridArea>
+      {isHistory && (
+        <GridArea area="closed_at">
+          <strong>Aberta em: </strong>
+          {new Intl.DateTimeFormat('pt-BR', {
+            dateStyle: 'long',
+          }).format(new Date(job.closed_at))}
+        </GridArea>
+      )}
       <GridArea area="job_id">{job.job_id}</GridArea>
     </JobGrid>
   )

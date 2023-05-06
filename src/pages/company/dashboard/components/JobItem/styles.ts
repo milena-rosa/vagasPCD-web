@@ -17,6 +17,7 @@ export const JobGrid = styled('div', {
     "location disability_type"
     "linkedin linkedin"
     "job_id job_id"
+    "closed_at closed_at"
   `,
   gridTemplateColumns: 'repeat(2, 1fr)',
   gridTemplateRows: 'auto auto auto',
@@ -77,6 +78,7 @@ export const GridArea = styled('div', {
         gridArea: 'job_id',
         textAlign: 'right',
       },
+      closed_at: { gridArea: 'closed_at' },
     },
   },
 })

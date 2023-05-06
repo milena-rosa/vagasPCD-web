@@ -10,8 +10,8 @@ interface HeaderProps {
 }
 
 export default function Header({
-  authenticateRoute = `/login?role=${Role.CANDIDATE}`,
-  registerRoute = '/candidate/register',
+  authenticateRoute = `/login?role=${Role.COMPANY}`,
+  registerRoute = '/company/register',
 }: HeaderProps) {
   const router = useRouter()
   const { isAuthenticated, signOut } = useAuth()

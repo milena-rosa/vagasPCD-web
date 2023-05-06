@@ -88,13 +88,23 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     const { 'vagasPCD.token': token, 'vagasPCD.role': role } = parseCookies()
-
-    if (token) {
-      apiVagasPCD.get(`/${role}/recover?token=${token}`).then((response) => {
-        setUser(response.data.candidate)
-      })
+    if (token && role) {
+      retrieveUser({ token, role })
     }
   }, [])
+
+  async function retrieveUser({
+    token,
+    role,
+  }: {
+    token: string
+    role: string
+  }) {
+    const response = await apiVagasPCD.get<User>(
+      `/${role}/recover?token=${token}`,
+    )
+    setUser(response.data)
+  }
 
   async function signIn({ role, email, password }: SignInData) {
     try {

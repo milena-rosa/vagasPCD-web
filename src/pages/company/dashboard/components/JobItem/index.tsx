@@ -1,4 +1,8 @@
+import { apiVagasPCD } from '@/services/apiVagasPCD'
+import { Button } from '@vagaspcd-ui/react'
 import Link from 'next/link'
+import { useReducer } from 'react'
+import { toast } from 'react-toastify'
 import { Job } from '../JobList'
 import { GridArea, JobGrid } from './styles'
 
@@ -8,6 +12,22 @@ interface JobItemProps {
 }
 
 export default function JobItem({ job, isHistory }: JobItemProps) {
+  const rerender = useReducer(() => ({}), {})[1]
+
+  async function handleCloseJob(jobId: string) {
+    try {
+      const response = await apiVagasPCD.patch(`/jobs/${jobId}/close`)
+      if (response.status === 200) {
+        toast.success('Vaga fechada com sucesso', { autoClose: 3000 })
+      }
+      rerender()
+    } catch (error) {
+      toast.error('Algo deu errado. Por favor, tente novamente.', {
+        autoClose: 3000,
+      })
+    }
+  }
+
   return (
     <JobGrid>
       <GridArea area="title">
@@ -53,12 +73,20 @@ export default function JobItem({ job, isHistory }: JobItemProps) {
           {job.linkedin}
         </Link>
       </GridArea>
-      {isHistory && (
+      {isHistory ? (
         <GridArea area="closed_at">
-          <strong>Aberta em: </strong>
-          {new Intl.DateTimeFormat('pt-BR', {
-            dateStyle: 'long',
-          }).format(new Date(job.closed_at))}
+          <strong>Fechada em: </strong>
+          {job.closed_at
+            ? new Intl.DateTimeFormat('pt-BR', {
+                dateStyle: 'long',
+              }).format(new Date(job.closed_at))
+            : '-'}
+        </GridArea>
+      ) : (
+        <GridArea area="close_job">
+          <Button size="sm" onClick={() => handleCloseJob(job.job_id)}>
+            Fechar vaga
+          </Button>
         </GridArea>
       )}
       <GridArea area="job_id">{job.job_id}</GridArea>

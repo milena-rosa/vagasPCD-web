@@ -1,4 +1,5 @@
 import Header from '@/components/Header'
+import { Role } from '@/contexts/AuthContext'
 import { apiVagasPCD } from '@/services/apiVagasPCD'
 import { Heading } from '@vagaspcd-ui/react'
 import { GetServerSideProps } from 'next'
@@ -12,16 +13,13 @@ import { Container, MainSection } from '../../styles'
 export default function JobsHistory() {
   const [data, setData] = useState<Job[]>([])
 
+  console.log('\x1b[32m%s\x1b[0m', 'index.page.tsx line:16 data', data)
   useEffect(() => {
-    const loadOpenJobs = async () => {
-      const response = await apiVagasPCD.get('/jobs/open')
+    const loadJobsHistory = async () => {
+      const response = await apiVagasPCD.get('/jobs/history')
       setData(response.data)
     }
-    loadOpenJobs()
-  }, [])
-
-  useEffect(() => {
-    apiVagasPCD.get('/jobs/history').then((response) => setData(response.data))
+    loadJobsHistory()
   }, [])
 
   return (
@@ -33,12 +31,12 @@ export default function JobsHistory() {
       <Header />
 
       <Container>
-        <DashboardSideNav />
+        <DashboardSideNav currentPageId={3} />
 
         <MainSection>
           <Heading size="md">Histórico de vagas</Heading>
 
-          <JobList data={data} />
+          <JobList data={data} isHistory />
         </MainSection>
       </Container>
     </>
@@ -52,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (!token) {
     return {
       redirect: {
-        destination: '/company',
+        destination: `/login?role=${Role.COMPANY}`,
         permanent: false,
       },
     }

@@ -1,4 +1,5 @@
 import Header from '@/components/Header'
+import { Role } from '@/contexts/AuthContext'
 import { apiVagasPCD } from '@/services/apiVagasPCD'
 import { Heading } from '@vagaspcd-ui/react'
 import { GetServerSideProps } from 'next'
@@ -22,7 +23,7 @@ export default function OpenJobs() {
 
   useEffect(() => {
     apiVagasPCD.get('/jobs/open').then((response) => setData(response.data))
-  }, [])
+  }, [data])
 
   return (
     <>
@@ -33,7 +34,7 @@ export default function OpenJobs() {
       <Header />
 
       <Container>
-        <DashboardSideNav />
+        <DashboardSideNav currentPageId={2} />
 
         <MainSection>
           <Heading size="md">Vagas abertas</Heading>
@@ -52,7 +53,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (!token) {
     return {
       redirect: {
-        destination: '/company',
+        destination: `/login?role=${Role.COMPANY}`,
         permanent: false,
       },
     }

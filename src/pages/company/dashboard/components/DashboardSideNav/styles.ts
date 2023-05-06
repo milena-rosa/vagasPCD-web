@@ -30,6 +30,17 @@ export const MenuItem = styled(Link, {
   '&:hover': {
     backgroundColor: '#244f7d1c',
   },
+
+  variants: {
+    state: {
+      selected: { backgroundColor: '$primary60' },
+      default: { backgroundColor: 'transparent' },
+    },
+  },
+
+  defaultVariants: {
+    state: 'default',
+  },
 })
 
 export const LinkText = styled('span', {

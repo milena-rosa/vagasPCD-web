@@ -90,7 +90,7 @@ export default function RegisterJobs() {
       <Header />
 
       <Container>
-        <DashboardSideNav />
+        <DashboardSideNav currentPageId={1} />
 
         <MainSection>
           <Heading size="md">Formulário de Dados Sobre a Vaga</Heading>

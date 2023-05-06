@@ -60,7 +60,6 @@ interface JobListProps {
 
 export default function JobList({ data, isHistory = false }: JobListProps) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  // const [data, setData] = useState<Job[]>([])
 
   const handleFilterChange = <T,>(id: string, value: T | undefined) => {
     const otherFilters = columnFilters.filter((rule) => rule.id !== id)

@@ -122,10 +122,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
       router.push(PAGE_REDIRECT[role as Role].signIn)
     } catch (error) {
       if (error instanceof AxiosError && error?.response?.data?.message) {
-        if (error.status === 404) {
+        if (error.response.status) {
           toast.error('Verifique as informações e tente novamente.', {
             autoClose: 3000,
           })
+          return
         }
         toast.error(error.response.data.message, { autoClose: 3000 })
         return

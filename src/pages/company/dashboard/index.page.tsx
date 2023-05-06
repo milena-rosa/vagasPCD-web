@@ -1,7 +1,7 @@
 import Header from '@/components/Header'
 import Head from 'next/head'
 
-import DashboardNavBar from './components/DashboardNavBar'
+import DashboardNavBar from './components/DashboardSideNav'
 import { Container, MainSection } from './styles'
 
 export default function CompanyHome() {

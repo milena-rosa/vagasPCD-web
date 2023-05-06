@@ -1,4 +1,4 @@
-import { styled } from '@vagaspcd-ui/react'
+import { Heading, Text, styled } from '@vagaspcd-ui/react'
 
 export const HeroSection = styled('section', {
   alignItems: 'center',
@@ -45,13 +45,13 @@ export const GoalsTextBox = styled('div', {
   padding: '$12 0',
   width: '80%',
 
-  h2: {
+  [`${Heading}`]: {
     marginBottom: '$8',
     color: '$black',
     textAlign: 'center',
   },
 
-  p: {
+  [`${Text}`]: {
     color: '$black',
   },
 
@@ -66,7 +66,7 @@ export const BlurbSection = styled('section', {
   padding: '$16 0',
   width: '80%',
 
-  h2: {
+  [`${Heading}`]: {
     color: '$black',
     maxWidth: 300,
   },
@@ -85,7 +85,7 @@ export const RightsLinkBox = styled('div', {
     },
   },
 
-  p: {
+  [`${Text}`]: {
     color: '$black',
     marginLeft: '$4',
   },

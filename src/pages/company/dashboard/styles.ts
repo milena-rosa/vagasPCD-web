@@ -13,7 +13,7 @@ export const MainSection = styled('main', {
   height: '100%',
   margin: '0 auto',
   padding: '$10',
-  width: '60%',
+  width: '100%',
 
   [`> ${Heading}`]: {
     fontWeight: '$medium',

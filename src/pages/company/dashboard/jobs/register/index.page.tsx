@@ -18,7 +18,7 @@ import { parseCookies } from 'nookies'
 import { useForm } from 'react-hook-form'
 import { useIMask } from 'react-imask'
 import { toast } from 'react-toastify'
-import DashboardNavBar from '../../components/DashboardNavBar'
+import DashboardSideNav from '../../components/DashboardSideNav'
 import { Container, MainSection } from '../../styles'
 import { RegisterJobFormData, registerJobFormSchema } from './registerSchemas'
 import { ButtonBox, Form, FormError } from './styles'
@@ -90,7 +90,7 @@ export default function RegisterJobs() {
       <Header />
 
       <Container>
-        <DashboardNavBar />
+        <DashboardSideNav />
 
         <MainSection>
           <Heading size="md">Formulário de Dados Sobre a Vaga</Heading>
@@ -163,7 +163,7 @@ export default function RegisterJobs() {
                 items={[
                   { label: 'Remoto', value: 'remote' },
                   { label: 'Híbrido', value: 'hybrid' },
-                  { label: 'Presencial', value: 'onSite' },
+                  { label: 'Presencial', value: 'on_site' },
                 ]}
                 onValueChange={(value) => setValue('location', value)}
               />

@@ -1,9 +1,9 @@
+import { Job } from '@/@types/job'
 import { apiVagasPCD } from '@/services/apiVagasPCD'
 import { Button } from '@vagaspcd-ui/react'
 import Link from 'next/link'
 import { useReducer } from 'react'
 import { toast } from 'react-toastify'
-import { Job } from '../JobList'
 import { GridArea, JobGrid } from './styles'
 
 interface JobItemProps {

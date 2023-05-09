@@ -1,4 +1,5 @@
-import { Role, useAuth } from '@/contexts/AuthContext'
+import { Role } from '@/@types/user'
+import { useAuth } from '@/contexts/AuthContext'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   ArrowLeft,
@@ -11,7 +12,6 @@ import {
 } from '@phosphor-icons/react'
 import { Button, Heading, Text, TextInput } from '@vagaspcd-ui/react'
 import Head from 'next/head'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -120,8 +120,6 @@ export default function Login() {
                 INSS/MTE
               </Button>
             </ButtonBox>
-
-            <Link href="/candidate/register"></Link>
           </Footer>
         </Container>
       </MainPage>

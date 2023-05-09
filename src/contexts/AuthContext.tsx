@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { Role, User } from '@/@types/user'
 import { apiVagasPCD } from '@/services/apiVagasPCD'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
@@ -11,51 +12,6 @@ import {
   useState,
 } from 'react'
 import { toast } from 'react-toastify'
-
-export enum Role {
-  CANDIDATE = 'candidates',
-  COMPANY = 'companies',
-  GOVERNMENT = 'governmentUsers',
-}
-
-export type Candidate = {
-  name: string
-  email: string
-  zipCode: string
-  street: string
-  number: string
-  complement: string
-  neighborhood: string
-  city: string
-  state: string
-  phone: string
-  linkedin: string
-  profissionalExperience: string
-  educationalBackground: string
-  skills: string
-  role: Role.CANDIDATE
-}
-
-export type Company = {
-  email: string
-  cnpj: string
-  name: string
-  phone: string
-  street: string
-  zipCode: string
-  number: string
-  complement: string
-  city: string
-  state: string
-  role: Role.COMPANY
-}
-
-export type GovernmentUser = {
-  email: string
-  role: Role.GOVERNMENT
-}
-
-type User = Candidate | Company | GovernmentUser
 
 type SignInData = {
   role: string
@@ -71,7 +27,7 @@ type AuthContextData = {
 }
 
 const PAGE_REDIRECT = {
-  [Role.CANDIDATE]: { signIn: '/candidate/dashboard', signOut: '/candidate ' },
+  [Role.CANDIDATE]: { signIn: '/candidate', signOut: '/candidate ' },
   [Role.COMPANY]: { signIn: '/company/dashboard', signOut: '/company' },
   [Role.GOVERNMENT]: {
     signIn: '/government/dashboard',
@@ -103,7 +59,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const response = await apiVagasPCD.get<User>(
       `/${role}/recover?token=${token}`,
     )
-    setUser(response.data)
+
+    setUser({
+      ...response.data,
+      role: role as Role,
+    })
   }
 
   async function signIn({ role, email, password }: SignInData) {
@@ -129,7 +89,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
       setUser(user)
 
-      router.push(PAGE_REDIRECT[role as Role].signIn)
+      if (router.query.from) {
+        router.push(`${router.query.from}`)
+      } else {
+        router.push(PAGE_REDIRECT[role as Role].signIn)
+      }
     } catch (error) {
       if (error instanceof AxiosError && error?.response?.data?.message) {
         if (error.response.status) {

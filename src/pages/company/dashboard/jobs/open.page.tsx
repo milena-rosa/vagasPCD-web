@@ -1,14 +1,15 @@
+import { Job } from '@/@types/job'
+import { Role } from '@/@types/user'
 import Header from '@/components/Header'
-import { Role } from '@/contexts/AuthContext'
 import { apiVagasPCD } from '@/services/apiVagasPCD'
 import { Heading } from '@vagaspcd-ui/react'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { parseCookies } from 'nookies'
 import { useEffect, useState } from 'react'
-import DashboardSideNav from '../../components/DashboardSideNav'
-import JobList, { Job } from '../../components/JobList'
-import { Container, MainSection } from '../../styles'
+import DashboardSideNav from '../components/DashboardSideNav'
+import JobList from '../components/JobList'
+import { Container, MainSection } from '../styles'
 
 export default function OpenJobs() {
   const [data, setData] = useState<Job[]>([])

@@ -20,7 +20,7 @@ export const SearchSectionTitle = styled('div', {
   },
 })
 
-export const SearchBox = styled('div', {
+export const SearchBox = styled('form', {
   display: 'flex',
   margin: '$6 0',
   width: '80%',
@@ -42,6 +42,25 @@ export const JobTypesBox = styled('div', {
     },
   },
 })
+
+// export const MainSection = styled('main', {
+//   alignItems: 'center',
+//   color: '$white',
+//   flexDirection: 'column',
+//   height: '100%',
+//   margin: '0 auto',
+//   padding: '$10',
+//   width: '100%',
+
+//   [`> ${Heading}`]: {
+//     fontWeight: '$medium',
+//     marginBottom: '$1',
+//   },
+
+//   [`> ${Text}`]: {
+//     maxWidth: '70%',
+//   },
+// })
 
 export const MainSection = styled('section', {
   alignItems: 'center',
@@ -99,4 +118,10 @@ export const RightsLinkBox = styled('div', {
     color: '$black',
     marginLeft: '$4',
   },
+})
+
+export const Container = styled('div', {
+  backgroundColor: '$black',
+  display: 'flex',
+  minHeight: '100vh',
 })

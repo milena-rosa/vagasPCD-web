@@ -1,10 +1,6 @@
+import { Role } from '@/@types/user'
 import Header from '@/components/Header'
-import { Role } from '@/contexts/AuthContext'
-import {
-  MagnifyingGlass,
-  RocketLaunch,
-  WheelchairMotion,
-} from '@phosphor-icons/react'
+import { MagnifyingGlass, WheelchairMotion } from '@phosphor-icons/react'
 import {
   Button,
   Heading,
@@ -16,6 +12,7 @@ import {
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { MouseEvent, useState } from 'react'
 import {
   BlurbSection,
   GoalsTextBox,
@@ -29,6 +26,15 @@ import {
 
 export default function CandidateHome() {
   const router = useRouter()
+  const [searchJobQuery, setSearchJobQuery] = useState('')
+
+  async function handleSearchButtonClick(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault()
+    router.push({
+      pathname: '/candidate/jobs',
+      query: { query: searchJobQuery },
+    })
+  }
 
   return (
     <>
@@ -50,22 +56,25 @@ export default function CandidateHome() {
         </SearchSectionTitle>
 
         <SearchBox>
-          <TextInput type="text" />
-          <Button>
+          <TextInput
+            type="text"
+            onChange={(event) => setSearchJobQuery(event.target.value)}
+          />
+          <Button type="submit" onClick={handleSearchButtonClick}>
             <MagnifyingGlass />
             Buscar
           </Button>
         </SearchBox>
 
         <JobTypesBox>
-          <Button size="sm" onClick={() => router.push('jobs')}>
+          <Button size="sm" onClick={() => router.push('/candidate/jobs')}>
             <WheelchairMotion />
             Vagas
           </Button>
-          <Button size="sm">
+          {/* <Button size="sm">
             <RocketLaunch />
             Estágio
-          </Button>
+          </Button> */}
         </JobTypesBox>
       </SearchSection>
 
@@ -95,7 +104,8 @@ export default function CandidateHome() {
             </ListItem>
             <ListItem data-icon="›">
               Reduzir custos decorrentes de multas das empresas por não
-              contratação de PcD dentro das cotas definidas lei; entre outras.
+              contratação de PcD dentro das cotas definidas por lei; entre
+              outras.
             </ListItem>
           </UnorderedList>
         </GoalsTextBox>

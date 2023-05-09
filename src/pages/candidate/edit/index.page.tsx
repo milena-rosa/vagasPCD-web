@@ -1,20 +1,24 @@
+import { Candidate } from '@/@types/candidate'
+import { Role } from '@/@types/user'
+import Header from '@/components/Header'
 import { apiCEP } from '@/services/apiCEP'
 import { apiVagasPCD } from '@/services/apiVagasPCD'
 import { phoneMask, zipCodeMask } from '@/utils/masks'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeft, MagnifyingGlass } from '@phosphor-icons/react'
 import { Button, Heading, Text, TextArea, TextInput } from '@vagaspcd-ui/react'
-import { AxiosError } from 'axios'
+import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { MouseEvent } from 'react'
+import { parseCookies } from 'nookies'
+import { MouseEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import {
   AddressType,
-  RegisterCandidateFormData,
-  registerCandidateFormSchema,
-} from './registerSchemas'
+  EditCandidateFormData,
+  editCandidateFormSchema,
+} from './editSchemas'
 import {
   ButtonBox,
   Container,
@@ -23,21 +27,50 @@ import {
   MainPage,
   Row,
   SearchButton,
-} from './styles'
+} from './style'
 
-export default function RegisterCandidate() {
+export default function EditProfile() {
   const router = useRouter()
+  const [data, setData] = useState<Candidate | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const {
+    reset,
     register,
-    handleSubmit,
     setError,
     getValues,
+    handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
-  } = useForm<RegisterCandidateFormData>({
-    resolver: zodResolver(registerCandidateFormSchema),
+  } = useForm<EditCandidateFormData>({
+    resolver: zodResolver(editCandidateFormSchema),
   })
+
+  useEffect(() => {
+    setIsLoading(true)
+    apiVagasPCD
+      .get<Candidate>('/candidates/me')
+      .then((response) => {
+        setData(response.data)
+        reset({
+          name: response.data.name,
+          zipCode: String(zipCodeMask.maskDefault(response.data.zipCode)),
+          street: response.data.street,
+          neighborhood: response.data.neighborhood,
+          city: response.data.city,
+          state: response.data.state,
+          number: response.data.number,
+          complement: response.data.complement,
+          phone: String(phoneMask.maskDefault(response.data.phone)),
+          linkedin: response.data.linkedin,
+          professionalExperience: response.data.professionalExperience,
+          educationalBackground: response.data.educationalBackground,
+          skills: response.data.skills,
+        })
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }, [reset])
 
   async function handleFindAddress(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
@@ -54,74 +87,38 @@ export default function RegisterCandidate() {
       })
     } catch (error) {
       setError('zipCode', { message: 'CEP inválido', type: 'validate' })
-      toast.error((error as Error).message, { autoClose: 3000 })
+      toast.error('CEP inválido', { autoClose: 3000 })
     }
   }
 
-  async function handleRegister({
-    name,
-    email,
-    password,
-    phone,
-    zipCode,
-    street,
-    number,
-    complement,
-    neighborhood,
-    city,
-    state,
-    linkedin,
-    educationalBackground,
-    professionalExperience,
-    skills,
-  }: RegisterCandidateFormData) {
-    try {
-      await apiVagasPCD.post('/candidates', {
-        name,
-        email,
-        password,
-        phone: phoneMask.unmask(phone),
-        zipCode: zipCodeMask.unmask(zipCode),
-        street,
-        number,
-        complement,
-        neighborhood,
-        city,
-        state,
-        linkedin,
-        educationalBackground,
-        professionalExperience,
-        skills,
-      })
-      await router.push('/candidate')
-    } catch (error) {
-      if (error instanceof AxiosError && error?.response?.data?.message) {
-        toast.error(error.response.data.message, { autoClose: 3000 })
-        return
-      }
-      toast.error((error as Error).message, { autoClose: 3000 })
-    }
+  async function handleUpdateProfile(data: EditCandidateFormData) {
+    await apiVagasPCD.patch('/candidates', {
+      ...data,
+      zipCode: zipCodeMask.unmask(data.zipCode),
+      phone: phoneMask.unmask(data.phone),
+    })
+    await router.push('/candidate')
   }
+
+  if (isLoading) return <Heading>Carregando...</Heading>
+  if (!data) return <Heading>Perfil não encontrado</Heading>
 
   return (
     <>
       <Head>
-        <title>vagasPCD | Cadastro de Candidato</title>
+        <title>vagasPCD | Edição de perfil</title>
       </Head>
+
+      <Header
+        authenticateRoute={`/login?role=${Role.CANDIDATE}`}
+        registerRoute="/candidate/register"
+      />
 
       <MainPage>
         <Container>
-          <Heading size="md">Formulário de Inscrição</Heading>
-          <Text size="sm">
-            Preencha com todas as suas informações pessoais, profissionais e
-            educacionais.
-          </Text>
-          <Text size="sm">
-            Lembre-se de impressionar e colocar as suas melhores habilidades e
-            competências!
-          </Text>
+          <Heading size="md">Editar perfil</Heading>
 
-          <Form as="form" onSubmit={handleSubmit(handleRegister)}>
+          <Form as="form" onSubmit={handleSubmit(handleUpdateProfile)}>
             <label>
               <Text>Nome completo</Text>
               <TextInput placeholder="Nome completo" {...register('name')} />
@@ -129,19 +126,20 @@ export default function RegisterCandidate() {
                 <FormError size="sm">{errors.name.message}</FormError>
               )}
             </label>
+
             <label>
-              <Text>E-mail</Text>
+              <Text>Senha atual</Text>
               <TextInput
-                type="email"
-                placeholder="E-mail"
-                {...register('email')}
+                type="password"
+                placeholder="Senha atual"
+                {...register('oldPassword')}
               />
+              {errors.oldPassword && (
+                <FormError size="sm">{errors.oldPassword.message}</FormError>
+              )}
             </label>
-            {errors.email && (
-              <FormError size="sm">{errors.email.message}</FormError>
-            )}
             <label>
-              <Text>Senha</Text>
+              <Text>Nova Senha</Text>
               <TextInput
                 type="password"
                 placeholder="Senha"
@@ -164,6 +162,7 @@ export default function RegisterCandidate() {
                 </FormError>
               )}
             </label>
+
             <Row>
               <label>
                 <Text>CEP</Text>
@@ -180,6 +179,7 @@ export default function RegisterCandidate() {
             {errors.zipCode && (
               <FormError size="sm">{errors.zipCode.message}</FormError>
             )}
+
             <label>
               <Text>Rua</Text>
               <TextInput disabled placeholder="Rua" {...register('street')} />
@@ -210,6 +210,7 @@ export default function RegisterCandidate() {
                 />
               </label>
             </Row>
+
             <Row>
               <label>
                 <Text>Número</Text>
@@ -227,6 +228,7 @@ export default function RegisterCandidate() {
             {errors.number && (
               <FormError size="sm">{errors.number.message}</FormError>
             )}
+
             <Row>
               <label>
                 <Text>Celular</Text>
@@ -240,6 +242,7 @@ export default function RegisterCandidate() {
                 )}
               </label>
             </Row>
+
             <label>
               <Text>LinkedIn</Text>
               <TextInput
@@ -269,13 +272,14 @@ export default function RegisterCandidate() {
                 {...register('skills')}
               />
             </label>
+
             <ButtonBox>
               <Button type="button" onClick={() => router.back()}>
                 <ArrowLeft />
                 Voltar para página anterior
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                Registrar
+                Alterar
               </Button>
             </ButtonBox>
           </Form>
@@ -283,4 +287,21 @@ export default function RegisterCandidate() {
       </MainPage>
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { 'vagasPCD.token': token } = parseCookies(ctx)
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: `/login?role=${Role.COMPANY}`,
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: {},
+  }
 }

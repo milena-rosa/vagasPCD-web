@@ -1,4 +1,3 @@
-import { apiVagasPCD } from '@/services/apiVagasPCD'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeft, MagnifyingGlass } from '@phosphor-icons/react'
 import { Button, Heading, Text, TextArea, TextInput } from '@vagaspcd-ui/react'
@@ -7,11 +6,12 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { useIMask } from 'react-imask'
 
 import { CompanyApiData, apiCNPJ } from '@/services/apiCNPJ'
+import { apiVagasPCD } from '@/services/apiVagasPCD'
 import { formatPhoneNumber } from '@/utils/formatPhoneNumber'
 import { formatZipCode } from '@/utils/formatZipCode'
+import { cnpjMask } from '@/utils/masks'
 import { toPascalCase } from '@/utils/toPascalCase'
 import { toast } from 'react-toastify'
 import {
@@ -34,31 +34,30 @@ export default function RegisterCandidate() {
   const {
     register,
     handleSubmit,
-    setValue,
+    reset,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<RegisterCompanyFormData>({
     resolver: zodResolver(registerCompanyFormSchema),
   })
 
-  const { ref: cnpjRef, unmaskedValue: cnpjValue } = useIMask({
-    mask: '00.000.000/0000-00',
-  })
-
-  async function handleFindCompanyInfo(event: React.MouseEvent, cnpj: string) {
+  async function handleFindCompanyInfo(event: React.MouseEvent) {
     event.preventDefault()
 
     try {
+      const cnpj = cnpjMask.unmask(getValues('cnpj'))
       const response = await apiCNPJ.get<CompanyApiData>(cnpj)
-
-      setValue('cnpj', cnpj)
-      setValue('name', toPascalCase(response.data.razao_social))
-      setValue('zipCode', formatZipCode(response.data.cep))
-      setValue('street', toPascalCase(response.data.logradouro))
-      setValue('number', response.data.numero)
-      setValue('complement', response.data.complemento)
-      setValue('city', toPascalCase(response.data.municipio))
-      setValue('state', response.data.uf)
-      setValue('phone', formatPhoneNumber(response.data.ddd_telefone_1))
+      reset({
+        cnpj: cnpjMask.mask(getValues('cnpj')),
+        name: toPascalCase(response.data.razao_social),
+        zipCode: formatZipCode(response.data.cep),
+        street: toPascalCase(response.data.logradouro),
+        number: response.data.numero,
+        complement: response.data.complemento,
+        city: toPascalCase(response.data.municipio),
+        state: response.data.uf,
+        phone: formatPhoneNumber(response.data.ddd_telefone_1),
+      })
     } catch (error) {
       toast.error('CNPJ não encontrado', { autoClose: 3000 })
       console.error(error)
@@ -67,12 +66,17 @@ export default function RegisterCandidate() {
 
   async function handleRegister({
     cnpj,
+    about,
+    linkedin,
     password,
     email,
   }: RegisterCompanyFormData) {
     try {
+      console.log(about, linkedin)
       await apiVagasPCD.post('/companies', {
-        cnpj,
+        cnpj: cnpjMask.unmask(cnpj),
+        about,
+        linkedin,
         email,
         password,
       })
@@ -160,13 +164,10 @@ export default function RegisterCandidate() {
                 <TextInput
                   placeholder="CNPJ"
                   {...register('cnpj')}
-                  ref={cnpjRef}
+                  onChange={cnpjMask.onChange}
                 />
               </label>
-              <SearchButton
-                type="button"
-                onClick={(event) => handleFindCompanyInfo(event, cnpjValue)}
-              >
+              <SearchButton type="button" onClick={handleFindCompanyInfo}>
                 <MagnifyingGlass />
               </SearchButton>
             </Row>
@@ -202,7 +203,11 @@ export default function RegisterCandidate() {
             <Row>
               <label>
                 <Text>Número</Text>
-                <TextInput placeholder="Número" {...register('number')} />
+                <TextInput
+                  disabled
+                  placeholder="Número"
+                  {...register('number')}
+                />
               </label>
               <label>
                 <Text>Complemento</Text>

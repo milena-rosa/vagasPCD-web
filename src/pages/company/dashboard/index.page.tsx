@@ -1,7 +1,7 @@
 import Header from '@/components/Header'
 import Head from 'next/head'
 
-import { Role } from '@/contexts/AuthContext'
+import { Role } from '@/@types/user'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 import DashboardNavBar from './components/DashboardSideNav'
@@ -17,7 +17,7 @@ export default function CompanyDashboard() {
       <Header />
 
       <Container>
-        <DashboardNavBar />
+        <DashboardNavBar currentPageId={0} />
         <MainSection>Resumão massinha?</MainSection>
       </Container>
     </>

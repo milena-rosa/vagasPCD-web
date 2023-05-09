@@ -1,5 +1,5 @@
+import { Role } from '@/@types/user'
 import Header from '@/components/Header'
-import { Role } from '@/contexts/AuthContext'
 import { RocketLaunch, WheelchairMotion } from '@phosphor-icons/react'
 import {
   Button,
@@ -76,7 +76,8 @@ export default function CompanyHome() {
             </ListItem>
             <ListItem data-icon="›">
               Reduzir custos decorrentes de multas das empresas por não
-              contratação de PcD dentro das cotas definidas lei; entre outras.
+              contratação de PcD dentro das cotas definidas por lei; entre
+              outras.
             </ListItem>
           </UnorderedList>
         </GoalsTextBox>

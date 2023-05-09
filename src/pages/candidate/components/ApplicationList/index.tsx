@@ -1,4 +1,4 @@
-import { Job } from '@/@types/job'
+import { Application } from '@/@types/application'
 import { paginate } from '@/utils/paginate'
 import {
   CaretDoubleLeft,
@@ -17,7 +17,7 @@ import {
 import { Select } from '@vagaspcd-ui/react'
 import { useMemo, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import JobItem from '../JobItem'
+import ApplicationItem from '../ApplicationItem'
 import JobTitleFilter from '../JobTitleFilter'
 import {
   NavigationButtonsBox,
@@ -27,27 +27,35 @@ import {
   PaginationContainer,
 } from './styles'
 
-export const columns: ColumnDef<Job, any>[] = [
-  { accessorKey: 'job_id' },
-  { accessorKey: 'title' },
-  { accessorKey: 'role' },
-  { accessorKey: 'linkedin' },
-  { accessorKey: 'description' },
-  { accessorKey: 'salary' },
-  { accessorKey: 'perks' },
-  { accessorKey: 'location' },
+export const columns: ColumnDef<Application, any>[] = [
+  { accessorKey: 'application_id' },
+  { accessorKey: 'applied_at' },
+  { accessorKey: 'company_about' },
+  { accessorKey: 'company_city' },
+  { accessorKey: 'company_linkedin' },
+  { accessorKey: 'company_name' },
+  { accessorKey: 'company_state' },
   { accessorKey: 'disability_type' },
-  { accessorKey: 'created_at' },
+  { accessorKey: 'job_closed_at' },
+  { accessorKey: 'job_created_at' },
+  { accessorKey: 'job_description' },
+  { accessorKey: 'job_id' },
+  { accessorKey: 'job_linkedin' },
+  { accessorKey: 'job_location' },
+  { accessorKey: 'job_role' },
+  { accessorKey: 'job_title' },
+  { accessorKey: 'perks' },
+  { accessorKey: 'salary' },
 ]
 
-interface JobListProps {
-  data: Job[]
-  isHistory?: boolean
+interface ApplicationsListProps {
+  data: Application[]
 }
 
-export default function JobList({ data, isHistory = false }: JobListProps) {
+export default function ApplicationsList({ data }: ApplicationsListProps) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
+  console.log(columnFilters)
   const handleFilterChange = <T,>(id: string, value: T | undefined) => {
     const otherFilters = columnFilters.filter((rule) => rule.id !== id)
     if (value) {
@@ -58,10 +66,10 @@ export default function JobList({ data, isHistory = false }: JobListProps) {
   }
 
   const handleTitleFilter = useDebouncedCallback((value) => {
-    handleFilterChange('title', value)
+    handleFilterChange('job_title', value)
   }, 400)
 
-  const table = useReactTable<Job>({
+  const table = useReactTable<Application>({
     data,
     columns,
     state: { columnFilters },
@@ -88,7 +96,7 @@ export default function JobList({ data, isHistory = false }: JobListProps) {
     <div>
       <JobTitleFilter handleChange={handleTitleFilter} />
       {table.getRowModel().rows.map((row) => (
-        <JobItem key={row.id} job={row.original} isHistory={isHistory} />
+        <ApplicationItem key={row.id} application={row.original} />
       ))}
 
       <PaginationContainer>

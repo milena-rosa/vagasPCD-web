@@ -5,6 +5,7 @@ import { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import { ReactElement, ReactNode } from 'react'
 import { ToastContainer } from 'react-toastify'
+import 'react-tooltip/dist/react-tooltip.css'
 
 globalStyles()
 

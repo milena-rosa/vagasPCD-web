@@ -2,6 +2,7 @@ import {
   Archive,
   CaretDoubleLeft,
   CaretDoubleRight,
+  House,
   ListBullets,
   PlusCircle,
   UserList,
@@ -18,6 +19,13 @@ export default function DashboardSideNav({
 }: DashboardSideNavProps) {
   const [open, setOpen] = useState(true)
   const [menuData, setMenuData] = useState([
+    {
+      id: 0,
+      icon: <House color="white" size={16} />,
+      text: 'Dashboard',
+      link: '/company/dashboard/jobs',
+      selected: true,
+    },
     {
       id: 1,
       icon: <PlusCircle color="white" size={16} />,

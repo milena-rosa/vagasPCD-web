@@ -1,3 +1,4 @@
+import Header from '@/components/Header'
 import { ArrowLeft, ArrowRight, Scales } from '@phosphor-icons/react'
 import { Button, Heading } from '@vagaspcd-ui/react'
 import Head from 'next/head'
@@ -12,6 +13,9 @@ export default function Rights() {
       <Head>
         <title>vagasPCD | Direitos da Pessoa com Deficiência</title>
       </Head>
+
+      <Header />
+
       <Container>
         <Heading>Direitos da Pessoa com Deficiência </Heading>
         <Scales size={80} />

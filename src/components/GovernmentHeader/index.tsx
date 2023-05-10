@@ -1,11 +1,8 @@
 import { useAuth } from '@/contexts/AuthContext'
-import { getInitials } from '@/utils/getInitials'
-import { SignOut, UserGear } from '@phosphor-icons/react'
+import { SignOut } from '@phosphor-icons/react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { useRouter } from 'next/router'
-import { MouseEvent } from 'react'
+import { Button } from '@vagaspcd-ui/react'
 import {
-  Avatar,
   Container,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -13,33 +10,31 @@ import {
   HeaderItem,
 } from './styles'
 
-export default function CandidateHeader() {
-  const router = useRouter()
+export default function GovernmentHeader() {
   const { user, signOut } = useAuth()
-
-  async function handleEditProfileClick(event: MouseEvent<HTMLDivElement>) {
-    event.preventDefault()
-    router.push('/candidate/edit')
-  }
 
   if (!user) return <div />
 
   return (
     <Container>
       <div>
-        <HeaderItem href="/candidate">Início</HeaderItem>
-        <HeaderItem href="/candidate/applications">Minhas vagas</HeaderItem>
+        <HeaderItem href="/government">Início</HeaderItem>
+        <HeaderItem href="/government/reports">Relatórios</HeaderItem>
+      </div>
+      <div>
+        <Button size="sm" onClick={() => signOut()}>
+          <SignOut />
+          Sair
+        </Button>
       </div>
       <DropdownMenu.Root>
-        <DropdownMenu.Trigger asChild>
-          <Avatar>{getInitials(user.name)}</Avatar>
-        </DropdownMenu.Trigger>
+        <DropdownMenu.Trigger asChild></DropdownMenu.Trigger>
         <DropdownMenu.Portal>
           <DropdownMenuContent sideOffset={5}>
-            <DropdownMenuItem onClick={handleEditProfileClick}>
+            {/* <DropdownMenuItem onClick={handleEditProfileClick}>
               <UserGear size={18} />
               <span>Editar perfil</span>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => signOut()}>
               <SignOut size={18} />

@@ -48,7 +48,7 @@ export default function EditProfile() {
   useEffect(() => {
     setIsLoading(true)
     apiVagasPCD
-      .get<Candidate>('/candidates/me')
+      .get<Candidate>('/candidate/me')
       .then((response) => {
         setData(response.data)
         reset({
@@ -92,7 +92,7 @@ export default function EditProfile() {
   }
 
   async function handleUpdateProfile(data: EditCandidateFormData) {
-    await apiVagasPCD.patch('/candidates', {
+    await apiVagasPCD.patch('/candidate', {
       ...data,
       zipCode: zipCodeMask.unmask(data.zipCode),
       phone: phoneMask.unmask(data.phone),

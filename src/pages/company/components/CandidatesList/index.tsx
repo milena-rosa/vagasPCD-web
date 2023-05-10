@@ -1,4 +1,4 @@
-import { Application } from '@/@types/application'
+import { Candidate } from '@/@types/candidate'
 import { paginate } from '@/utils/paginate'
 import {
   CaretDoubleLeft,
@@ -8,17 +8,13 @@ import {
 } from '@phosphor-icons/react'
 import {
   ColumnDef,
-  ColumnFiltersState,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { Select } from '@vagaspcd-ui/react'
-import { useMemo, useState } from 'react'
-import { useDebouncedCallback } from 'use-debounce'
-import ApplicationItem from '../ApplicationItem'
-import JobTitleFilter from '../JobTitleFilter'
+import { Heading, Select } from '@vagaspcd-ui/react'
+import { useMemo } from 'react'
+import CandidateItem from '../CandidateItem'
 import {
   NavigationButtonsBox,
   PageNumber,
@@ -27,55 +23,34 @@ import {
   PaginationContainer,
 } from './styles'
 
-export const columns: ColumnDef<Application, any>[] = [
-  { accessorKey: 'application_id' },
-  { accessorKey: 'applied_at' },
-  { accessorKey: 'company_about' },
-  { accessorKey: 'company_city' },
-  { accessorKey: 'company_linkedin' },
-  { accessorKey: 'company_name' },
-  { accessorKey: 'company_state' },
-  { accessorKey: 'disability_type' },
-  { accessorKey: 'job_closed_at' },
-  { accessorKey: 'job_created_at' },
-  { accessorKey: 'job_description' },
-  { accessorKey: 'job_id' },
-  { accessorKey: 'job_linkedin' },
-  { accessorKey: 'job_location' },
-  { accessorKey: 'job_role' },
-  { accessorKey: 'job_title' },
-  { accessorKey: 'perks' },
-  { accessorKey: 'salary' },
+export const columns: ColumnDef<Candidate, any>[] = [
+  { accessorKey: 'candidate_id' },
+  { accessorKey: 'name' },
+  { accessorKey: 'email' },
+  { accessorKey: 'phone' },
+  { accessorKey: 'linkedin' },
+  { accessorKey: 'street' },
+  { accessorKey: 'number' },
+  { accessorKey: 'complement' },
+  { accessorKey: 'neighborhood' },
+  { accessorKey: 'city' },
+  { accessorKey: 'state' },
+  { accessorKey: 'zipCode' },
+  { accessorKey: 'professionalExperience' },
+  { accessorKey: 'educationalBackground' },
+  { accessorKey: 'skills' },
 ]
 
-interface ApplicationsListProps {
-  data: Application[]
+interface CandidatesListProps {
+  data: Candidate[]
 }
 
-export default function ApplicationsList({ data }: ApplicationsListProps) {
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-
-  const handleFilterChange = <T,>(id: string, value: T | undefined) => {
-    const otherFilters = columnFilters.filter((rule) => rule.id !== id)
-    if (value) {
-      setColumnFilters([...otherFilters, { id, value }])
-    } else {
-      setColumnFilters(otherFilters)
-    }
-  }
-
-  const handleTitleFilter = useDebouncedCallback((value) => {
-    handleFilterChange('job_title', value)
-  }, 400)
-
-  const table = useReactTable<Application>({
+export default function CandidatesList({ data }: CandidatesListProps) {
+  const table = useReactTable<Candidate>({
     data,
     columns,
-    state: { columnFilters },
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onColumnFiltersChange: setColumnFilters,
   })
 
   const { items: paginationItems } = useMemo(() => {
@@ -84,18 +59,19 @@ export default function ApplicationsList({ data }: ApplicationsListProps) {
 
     const props = paginate({
       current: currentPage,
-      max: Math.floor(data.length / pageSize) + 1,
+      max: Math.floor(data?.length / pageSize) + 1,
     })
 
     return props
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.length, table.getState().pagination])
+  }, [data?.length, table.getState().pagination])
+
+  if (!data) return <Heading>Nenhum candidato para esta vaga...</Heading>
 
   return (
     <div>
-      <JobTitleFilter handleChange={handleTitleFilter} />
       {table.getRowModel().rows.map((row) => (
-        <ApplicationItem key={row.id} application={row.original} />
+        <CandidateItem key={row.id} candidate={row.original} />
       ))}
 
       <PaginationContainer>

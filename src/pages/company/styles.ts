@@ -68,7 +68,7 @@ export const BlurbSection = styled('section', {
 
   [`${Heading}`]: {
     color: '$black',
-    maxWidth: 300,
+    maxWidth: 400,
   },
 })
 

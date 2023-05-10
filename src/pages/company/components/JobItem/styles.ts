@@ -16,6 +16,7 @@ export const JobGrid = styled('div', {
     "perks perks"
     "location disability_type"
     "linkedin linkedin"
+    "applications applications"
     "closed_at closed_at"
     "close_job close_job"
     "job_id job_id"
@@ -80,6 +81,17 @@ export const GridArea = styled('div', {
         textAlign: 'right',
       },
       closed_at: { gridArea: 'closed_at' },
+      applications: {
+        gridArea: 'applications',
+        width: 200,
+        a: {
+          color: '$gray900',
+
+          '&:hover': {
+            filter: 'opacity(60%)',
+          },
+        },
+      },
       close_job: {
         gridArea: 'close_job',
         marginTop: '$4',

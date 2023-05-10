@@ -10,4 +10,5 @@ export type Job = {
   disability_type: string
   created_at: string
   closed_at: string
+  n_applications: number
 }

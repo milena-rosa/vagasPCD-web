@@ -7,9 +7,9 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { parseCookies } from 'nookies'
 import { useEffect, useState } from 'react'
-import DashboardSideNav from '../components/DashboardSideNav'
+
 import JobList from '../components/JobList'
-import { Container, MainSection } from '../styles'
+import { Container, MainSection } from './styles'
 
 export default function JobsHistory() {
   const [data, setData] = useState<Job[]>([])
@@ -31,8 +31,6 @@ export default function JobsHistory() {
       <Header />
 
       <Container>
-        <DashboardSideNav currentPageId={3} />
-
         <MainSection>
           <Heading size="md">Histórico de vagas</Heading>
 

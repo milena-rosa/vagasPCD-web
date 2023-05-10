@@ -2,9 +2,9 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { protectedRoutes } from './routes'
 
 const ROLES = {
-  candidate: 'candidates',
-  company: 'companies',
-  government: 'governmentUsers',
+  candidate: 'candidate',
+  company: 'company',
+  government: 'government',
 } as Record<string, string>
 
 export function middleware(request: NextRequest) {

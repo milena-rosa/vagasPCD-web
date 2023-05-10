@@ -1,4 +1,4 @@
-import RightsLayout from '@/components/layouts/RightsLayout'
+import InformativePageLayout from '@/components/layouts/InformativePageLayout'
 import { NextPageWithLayout } from '@/pages/_app.page'
 import { Heading, ListItem, Text, UnorderedList } from '@vagaspcd-ui/react'
 import Link from 'next/link'
@@ -123,7 +123,7 @@ const BPC: NextPageWithLayout = () => {
 }
 
 BPC.getLayout = function getLayout(page: ReactElement) {
-  return <RightsLayout>{page}</RightsLayout>
+  return <InformativePageLayout>{page}</InformativePageLayout>
 }
 
 export default BPC

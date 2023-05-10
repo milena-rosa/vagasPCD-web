@@ -44,12 +44,9 @@ export default function Jobs() {
   }
 
   useEffect(() => {
-    searchJobs(`${router.query.query}` ?? '')
+    const query = router.query.query ? String(router.query.query) : ''
+    searchJobs(query)
   }, [router.query.query])
-
-  useEffect(() => {
-    searchJobs('')
-  }, [])
 
   if (loading) {
     return <Heading>Carregando...</Heading>

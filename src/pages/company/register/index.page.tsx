@@ -72,8 +72,7 @@ export default function RegisterCandidate() {
     email,
   }: RegisterCompanyFormData) {
     try {
-      console.log(about, linkedin)
-      await apiVagasPCD.post('/companies', {
+      await apiVagasPCD.post('/company', {
         cnpj: cnpjMask.unmask(cnpj),
         about,
         linkedin,

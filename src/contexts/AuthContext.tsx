@@ -28,9 +28,9 @@ type AuthContextData = {
 
 const PAGE_REDIRECT = {
   [Role.CANDIDATE]: { signIn: '/candidate', signOut: '/candidate ' },
-  [Role.COMPANY]: { signIn: '/company/dashboard', signOut: '/company' },
+  [Role.COMPANY]: { signIn: '/company', signOut: '/company' },
   [Role.GOVERNMENT]: {
-    signIn: '/government/dashboard',
+    signIn: '/government',
     signOut: '/government',
   },
 }

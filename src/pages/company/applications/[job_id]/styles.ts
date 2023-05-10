@@ -1,19 +1,15 @@
 import { Heading, Text, styled } from '@vagaspcd-ui/react'
 
 export const Container = styled('div', {
-  backgroundColor: '$black',
-  display: 'flex',
+  backgroundColor: '$gray900',
   minHeight: '100vh',
 })
 
-export const MainSection = styled('main', {
-  alignItems: 'center',
+export const MainSection = styled('div', {
   color: '$white',
-  flexDirection: 'column',
-  height: '100%',
   margin: '0 auto',
   padding: '$10',
-  width: '100%',
+  width: '80%',
 
   [`> ${Heading}`]: {
     fontWeight: '$medium',

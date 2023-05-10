@@ -41,7 +41,6 @@ export default function CandidateApplications() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  // const apiVagasPCDClient = getAPIVagasPCDClient(ctx)
   const { 'vagasPCD.token': token } = parseCookies(ctx)
 
   if (!token) {

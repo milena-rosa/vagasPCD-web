@@ -1,6 +1,6 @@
-import { Button, Heading, ListItem, Text, styled } from '@vagaspcd-ui/react'
+import { Heading, Text, styled } from '@vagaspcd-ui/react'
 
-export const SearchSection = styled('section', {
+export const HeroSection = styled('section', {
   alignItems: 'center',
   backgroundColor: '$primary',
   display: 'flex',
@@ -8,33 +8,23 @@ export const SearchSection = styled('section', {
   padding: '$16 $12',
 })
 
-export const SearchSectionTitle = styled('div', {
+export const HeroSectionTitle = styled('div', {
   alignItems: 'flex-start',
   display: 'flex',
   flexDirection: 'column',
   width: '80%',
 
-  [`>${Text}`]: {
+  p: {
     marginBottom: '$2',
     maxWidth: '320px',
   },
 })
 
-export const SearchBox = styled('form', {
+export const ActionsBox = styled('div', {
   display: 'flex',
-  margin: '$6 0',
-  width: '80%',
+  marginTop: '$8',
 
-  [`> ${Button}`]: {
-    backgroundColor: '$black',
-    marginLeft: '$4',
-  },
-})
-
-export const JobTypesBox = styled('div', {
-  display: 'flex',
-
-  [`> ${Button}`]: {
+  button: {
     border: '$white solid 1px',
 
     '&:first-child': {
@@ -44,7 +34,8 @@ export const JobTypesBox = styled('div', {
 })
 
 export const MainSection = styled('section', {
-  alignItems: 'center',
+  backgroundColor: '$black',
+  alignItems: 'flex-start',
   display: 'flex',
   flexDirection: 'column',
   padding: '$6 $12',
@@ -55,30 +46,30 @@ export const GoalsTextBox = styled('div', {
   padding: '$12 0',
   width: '80%',
 
-  [`> ${Heading}`]: {
+  [`${Heading}`]: {
     marginBottom: '$8',
     color: '$black',
     textAlign: 'center',
   },
 
-  [`> ${Text}`]: {
+  [`${Text}`]: {
     color: '$black',
   },
 
-  [`${ListItem}`]: {
+  li: {
     color: '$black',
   },
 })
 
 export const BlurbSection = styled('section', {
   display: 'flex',
-  justifyContent: 'space-around',
+  justifyContent: 'space-between',
   padding: '$16 0',
-  width: '90%',
+  width: '80%',
 
   [`${Heading}`]: {
     color: '$black',
-    maxWidth: 300,
+    maxWidth: 400,
   },
 })
 
@@ -99,10 +90,4 @@ export const RightsLinkBox = styled('div', {
     color: '$black',
     marginLeft: '$4',
   },
-})
-
-export const Container = styled('div', {
-  backgroundColor: '$black',
-  display: 'flex',
-  minHeight: '100vh',
 })

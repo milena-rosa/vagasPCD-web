@@ -1,4 +1,4 @@
-import RightsLayout from '@/components/layouts/RightsLayout'
+import InformativePageLayout from '@/components/layouts/InformativePageLayout'
 import { NextPageWithLayout } from '@/pages/_app.page'
 import { Heading, Text } from '@vagaspcd-ui/react'
 import Link from 'next/link'
@@ -36,7 +36,7 @@ const Statute: NextPageWithLayout = () => {
 }
 
 Statute.getLayout = function getLayout(page: ReactElement) {
-  return <RightsLayout>{page}</RightsLayout>
+  return <InformativePageLayout>{page}</InformativePageLayout>
 }
 
 export default Statute

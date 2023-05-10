@@ -1,6 +1,10 @@
 import { Role } from '@/@types/user'
 import Header from '@/components/Header'
-import { MagnifyingGlass, WheelchairMotion } from '@phosphor-icons/react'
+import {
+  MagnifyingGlass,
+  RocketLaunch,
+  WheelchairMotion,
+} from '@phosphor-icons/react'
 import {
   Button,
   Heading,
@@ -30,7 +34,7 @@ export default function CandidateHome() {
 
   async function handleSearchButtonClick(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
-    router.push({
+    await router.push({
       pathname: '/candidate/jobs',
       query: { query: searchJobQuery },
     })
@@ -71,10 +75,18 @@ export default function CandidateHome() {
             <WheelchairMotion />
             Vagas
           </Button>
-          {/* <Button size="sm">
+          <Button
+            size="sm"
+            onClick={() => {
+              router.push({
+                pathname: '/candidate/jobs',
+                query: { query: 'estágio' },
+              })
+            }}
+          >
             <RocketLaunch />
             Estágio
-          </Button> */}
+          </Button>
         </JobTypesBox>
       </SearchSection>
 

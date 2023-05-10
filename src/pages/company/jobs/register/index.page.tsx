@@ -18,8 +18,7 @@ import { parseCookies } from 'nookies'
 import { useForm } from 'react-hook-form'
 import { useIMask } from 'react-imask'
 import { toast } from 'react-toastify'
-import DashboardSideNav from '../../components/DashboardSideNav'
-import { Container, MainSection } from '../../styles'
+import { Container, MainSection } from '../styles'
 import { RegisterJobFormData, registerJobFormSchema } from './registerSchemas'
 import { ButtonBox, Form, FormError } from './styles'
 
@@ -69,7 +68,7 @@ export default function RegisterJobs() {
       })
 
       toast.success('Vaga adicionada com sucesso!', { autoClose: 3000 })
-      await router.push('/company/dashboard')
+      await router.push('/company')
     } catch (error) {
       if (error instanceof AxiosError && error?.response?.data?.message) {
         toast.error(error.response.data.message, { autoClose: 3000 })
@@ -90,8 +89,6 @@ export default function RegisterJobs() {
       <Header />
 
       <Container>
-        <DashboardSideNav currentPageId={1} />
-
         <MainSection>
           <Heading size="md">Formulário de Dados Sobre a Vaga</Heading>
           <Text size="sm">

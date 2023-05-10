@@ -6,7 +6,7 @@ import { GovernmentUser } from './governmentUser'
 export type User = Candidate & Company & GovernmentUser
 
 export enum Role {
-  CANDIDATE = 'candidates',
-  COMPANY = 'companies',
-  GOVERNMENT = 'governmentUsers',
+  CANDIDATE = 'candidate',
+  COMPANY = 'company',
+  GOVERNMENT = 'government',
 }

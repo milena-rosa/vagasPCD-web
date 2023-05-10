@@ -1,4 +1,9 @@
-export const protectedRoutes = ['/candidate/dashboard', '/company/dashboard']
+export const protectedRoutes = [
+  '/candidate/applications',
+  '/company/jobs/open',
+  '/company/jobs/history',
+  '/government/summary',
+]
 export const authRoutes = ['/login']
 export const publicRoutes = [
   '/',

@@ -2,7 +2,7 @@ import { Heading, styled } from '@vagaspcd-ui/react'
 
 export const Container = styled('main', {
   margin: '$10 auto',
-  width: '80%',
+  width: '70%',
 
   [`> ${Heading}`]: {
     color: '$primary',

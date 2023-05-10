@@ -76,7 +76,7 @@ export default function RegisterCandidate() {
     skills,
   }: RegisterCandidateFormData) {
     try {
-      await apiVagasPCD.post('/candidates', {
+      await apiVagasPCD.post('/candidate', {
         name,
         email,
         password,

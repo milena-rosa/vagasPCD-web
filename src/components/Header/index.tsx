@@ -4,12 +4,20 @@ import { SignIn, SignOut, UserCirclePlus } from '@phosphor-icons/react'
 import { Button } from '@vagaspcd-ui/react'
 import { useRouter } from 'next/router'
 import CandidateHeader from '../CandidateHeader'
+import CompanyHeader from '../CompanyHeader'
+import GovernmentHeader from '../GovernmentHeader'
 import { Container, Content } from './styles'
 
 interface HeaderProps {
   authenticateRoute?: string
   registerRoute?: string
 }
+
+// const HEADER_BY_ROLE = {
+//   [Role.CANDIDATE]: <CandidateHeader />,
+//   [Role.COMPANY]: <CompanyHeader />,
+//   [Role.GOVERNMENT]: <GovernmentHeader />,
+// }
 
 export default function Header({
   authenticateRoute = `/login?role=${Role.COMPANY}`,
@@ -40,8 +48,12 @@ export default function Header({
               Faça seu Login
             </Button>
           </>
-        ) : user?.role === Role.CANDIDATE ? (
+        ) : user?.role.toLowerCase() === Role.CANDIDATE ? (
           <CandidateHeader />
+        ) : user?.role.toLowerCase() === Role.COMPANY ? (
+          <CompanyHeader />
+        ) : user?.role.toLowerCase() === Role.GOVERNMENT ? (
+          <GovernmentHeader />
         ) : (
           <Button size="sm" onClick={() => signOut()}>
             <SignOut />

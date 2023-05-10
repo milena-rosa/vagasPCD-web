@@ -1,6 +1,7 @@
 import { Role } from './user'
 
 export type Candidate = {
+  candidate_id: string
   name: string
   email: string
   zipCode: string

@@ -19,7 +19,7 @@ import { Container, Footer, GridArea, MainSection } from './styles'
 
 export default function JobPage() {
   const router = useRouter()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, user } = useAuth()
 
   const [job, setJob] = useState({} as Job)
   const [company, setCompany] = useState({} as Company)
@@ -147,9 +147,12 @@ export default function JobPage() {
             Voltar para o início
           </Button>
 
-          <Button onClick={handleSendResume}>
+          <Button
+            onClick={handleSendResume}
+            disabled={isAuthenticated && user?.role !== Role.CANDIDATE}
+          >
             <ReadCvLogo />
-            Enviar Curriculum
+            Enviar Currículo
           </Button>
         </Footer>
       </Container>

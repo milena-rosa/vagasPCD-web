@@ -7,9 +7,9 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { parseCookies } from 'nookies'
 import { useEffect, useState } from 'react'
-import DashboardSideNav from '../components/DashboardSideNav'
+
 import JobList from '../components/JobList'
-import { Container, MainSection } from '../styles'
+import { Container, MainSection } from './styles'
 
 export default function OpenJobs() {
   const [data, setData] = useState<Job[]>([])
@@ -17,14 +17,15 @@ export default function OpenJobs() {
   useEffect(() => {
     const loadOpenJobs = async () => {
       const response = await apiVagasPCD.get('/jobs/open')
+      console.log(
+        '%copen.page.tsx line:20 response.data',
+        'color: white; background-color: #007acc;',
+        response.data,
+      )
       setData(response.data)
     }
     loadOpenJobs()
   }, [])
-
-  useEffect(() => {
-    apiVagasPCD.get('/jobs/open').then((response) => setData(response.data))
-  }, [data])
 
   return (
     <>
@@ -35,8 +36,6 @@ export default function OpenJobs() {
       <Header />
 
       <Container>
-        <DashboardSideNav currentPageId={2} />
-
         <MainSection>
           <Heading size="md">Vagas abertas</Heading>
 

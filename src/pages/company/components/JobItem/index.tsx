@@ -1,9 +1,11 @@
 import { Job } from '@/@types/job'
 import { apiVagasPCD } from '@/services/apiVagasPCD'
+import { X } from '@phosphor-icons/react'
 import { Button } from '@vagaspcd-ui/react'
 import Link from 'next/link'
 import { useReducer } from 'react'
 import { toast } from 'react-toastify'
+import { Tooltip } from 'react-tooltip'
 import { GridArea, JobGrid } from './styles'
 
 interface JobItemProps {
@@ -30,10 +32,12 @@ export default function JobItem({ job, isHistory }: JobItemProps) {
 
   return (
     <JobGrid>
-      <GridArea area="title">
+      <GridArea area="title" data-tooltip-id={job.job_id}>
         <strong>Vaga:&nbsp;</strong>
         {job.title}
       </GridArea>
+      <Tooltip id={job.job_id}>{job.title}</Tooltip>
+
       <GridArea area="role">
         <strong>Cargo: </strong>
         {job.role}
@@ -73,6 +77,23 @@ export default function JobItem({ job, isHistory }: JobItemProps) {
           {job.linkedin}
         </Link>
       </GridArea>
+      <GridArea area="applications">
+        <strong>Candidatos: </strong>
+      </GridArea>
+
+      <GridArea
+        area="applications"
+        data-tooltip-id={`${job.job_id}-applications`}
+      >
+        <strong>Candidatos: </strong>
+        <Link href={`/company/applications/${job.job_id}`}>
+          {job.n_applications}
+        </Link>
+      </GridArea>
+      <Tooltip id={`${job.job_id}-applications`}>
+        Clique para ver perfil dos candidatos
+      </Tooltip>
+
       {isHistory ? (
         <GridArea area="closed_at">
           <strong>Fechada em: </strong>
@@ -85,7 +106,7 @@ export default function JobItem({ job, isHistory }: JobItemProps) {
       ) : (
         <GridArea area="close_job">
           <Button size="sm" onClick={() => handleCloseJob(job.job_id)}>
-            Fechar vaga
+            <X /> Fechar vaga
           </Button>
         </GridArea>
       )}

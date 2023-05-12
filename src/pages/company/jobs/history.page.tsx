@@ -2,7 +2,7 @@ import { Job } from '@/@types/job'
 import { Role } from '@/@types/user'
 import Header from '@/components/Header'
 import { apiVagasPCD } from '@/services/apiVagasPCD'
-import { Heading } from '@vagaspcd-ui/react'
+import { Heading, Text } from '@vagaspcd-ui/react'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { parseCookies } from 'nookies'
@@ -13,14 +13,19 @@ import { Container, MainSection } from './styles'
 
 export default function JobsHistory() {
   const [data, setData] = useState<Job[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
+    setIsLoading(true)
     const loadJobsHistory = async () => {
       const response = await apiVagasPCD.get('/jobs/history')
       setData(response.data)
     }
     loadJobsHistory()
+    setIsLoading(false)
   }, [])
+
+  if (isLoading) return <Heading>Carregando...</Heading>
 
   return (
     <>
@@ -34,7 +39,11 @@ export default function JobsHistory() {
         <MainSection>
           <Heading size="md">Histórico de vagas</Heading>
 
-          <JobList data={data} isHistory />
+          {data ? (
+            <JobList data={data} isHistory />
+          ) : (
+            <Text>Nenhuma vaga cadastrada</Text>
+          )}
         </MainSection>
       </Container>
     </>
@@ -42,7 +51,6 @@ export default function JobsHistory() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  // const apiVagasPCDClient = getAPIVagasPCDClient(ctx)
   const { 'vagasPCD.token': token } = parseCookies(ctx)
 
   if (!token) {
@@ -53,8 +61,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
     }
   }
-
-  // await apiClient.get('/...')
 
   return {
     props: {},

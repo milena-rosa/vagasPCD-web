@@ -7,7 +7,7 @@ import { formatPhoneNumber } from '@/utils/formatPhoneNumber'
 import { formatZipCode } from '@/utils/formatZipCode'
 import { toPascalCase } from '@/utils/toPascalCase'
 import { FileCsv } from '@phosphor-icons/react'
-import { Heading } from '@vagaspcd-ui/react'
+import { Heading, Text } from '@vagaspcd-ui/react'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { parseCookies } from 'nookies'
@@ -44,7 +44,6 @@ export default function Reports() {
   }, [])
 
   if (isLoading) return <Heading>Carregando...</Heading>
-  if (!data) return <Heading>Relatório não encontrado</Heading>
 
   return (
     <>
@@ -63,57 +62,63 @@ export default function Reports() {
             Emissão de Relatórios
           </Heading>
 
-          {data.map((item) => (
-            <CompanyGrid key={item.company_id}>
-              <GridArea area="name">{toPascalCase(item.company_name)}</GridArea>
+          {data.length ? (
+            data.map((item) => (
+              <CompanyGrid key={item.company_id}>
+                <GridArea area="name">
+                  {toPascalCase(item.company_name)}
+                </GridArea>
 
-              <GridArea area="cnpj">
-                <strong>CNPJ: </strong>
-                {formatCNPJ(item.company_cnpj)}
-              </GridArea>
+                <GridArea area="cnpj">
+                  <strong>CNPJ: </strong>
+                  {formatCNPJ(item.company_cnpj)}
+                </GridArea>
 
-              <GridArea area="email">
-                <strong>E-mail: </strong>
-                {item.company_email}
-              </GridArea>
-              <GridArea area="phone">
-                <strong>Telefone: </strong>
-                {formatPhoneNumber(item.company_phone) || '-'}
-              </GridArea>
+                <GridArea area="email">
+                  <strong>E-mail: </strong>
+                  {item.company_email}
+                </GridArea>
+                <GridArea area="phone">
+                  <strong>Telefone: </strong>
+                  {formatPhoneNumber(item.company_phone) || '-'}
+                </GridArea>
 
-              <GridArea area="street">
-                <strong>Rua: </strong>
-                {toPascalCase(item.company_street)}
-              </GridArea>
-              <GridArea area="number">
-                <strong>Número: </strong>
-                {item.company_number}
-              </GridArea>
-              <GridArea area="complement">
-                <strong>Complemento: </strong>
-                {toPascalCase(item.company_complement) || '-'}
-              </GridArea>
+                <GridArea area="street">
+                  <strong>Rua: </strong>
+                  {toPascalCase(item.company_street)}
+                </GridArea>
+                <GridArea area="number">
+                  <strong>Número: </strong>
+                  {item.company_number}
+                </GridArea>
+                <GridArea area="complement">
+                  <strong>Complemento: </strong>
+                  {toPascalCase(item.company_complement) || '-'}
+                </GridArea>
 
-              <GridArea area="city">
-                <strong>Cidade: </strong>
-                {toPascalCase(item.company_city)} / {item.company_state}
-              </GridArea>
-              <GridArea area="zipCode">
-                <strong>CEP: </strong>
-                {formatZipCode(item.company_zip_code)}
-              </GridArea>
+                <GridArea area="city">
+                  <strong>Cidade: </strong>
+                  {toPascalCase(item.company_city)} / {item.company_state}
+                </GridArea>
+                <GridArea area="zipCode">
+                  <strong>CEP: </strong>
+                  {formatZipCode(item.company_zip_code)}
+                </GridArea>
 
-              <GridArea area="n_jobs">
-                <strong>Vagas abertas: </strong>
-                {item.n_jobs}
-              </GridArea>
+                <GridArea area="n_jobs">
+                  <strong>Vagas abertas: </strong>
+                  {item.n_jobs}
+                </GridArea>
 
-              <GridArea area="n_applications">
-                <strong>Currículos recebidos: </strong>
-                {item.n_applications}
-              </GridArea>
-            </CompanyGrid>
-          ))}
+                <GridArea area="n_applications">
+                  <strong>Currículos recebidos: </strong>
+                  {item.n_applications}
+                </GridArea>
+              </CompanyGrid>
+            ))
+          ) : (
+            <Text>Nenhum dado a ser exibido</Text>
+          )}
 
           <Footer>
             <DownloadCSVButton data={csvData || []} target="_blank">

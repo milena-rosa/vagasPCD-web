@@ -2,7 +2,7 @@ import { Candidate } from '@/@types/candidate'
 import { Role } from '@/@types/user'
 import Header from '@/components/Header'
 import { apiVagasPCD } from '@/services/apiVagasPCD'
-import { Heading } from '@vagaspcd-ui/react'
+import { Heading, Text } from '@vagaspcd-ui/react'
 import { AxiosError } from 'axios'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -52,7 +52,6 @@ export default function JobApplications() {
   }, [router, router.query.job_id])
 
   if (isLoading) return <Heading>Carregando...</Heading>
-  if (!data) return <Heading>Nenhum candidato para esta vaga...</Heading>
 
   return (
     <>
@@ -66,7 +65,11 @@ export default function JobApplications() {
         <MainSection>
           <Heading size="md">Candidatos</Heading>
 
-          <CandidatesList data={data.candidates} />
+          {data.candidates.length ? (
+            <CandidatesList data={data.candidates} />
+          ) : (
+            <Text>Nenhum currículo enviado</Text>
+          )}
         </MainSection>
       </Container>
     </>

@@ -1,8 +1,11 @@
 import Header from '@/components/Header'
-import { Heading, Text, UnorderedList } from '@vagaspcd-ui/react'
+import { ArrowLeft } from '@phosphor-icons/react'
+import { Button, Heading, Text, UnorderedList } from '@vagaspcd-ui/react'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import {
   Container,
+  Footer,
   ListItem,
   Main,
   MainSection,
@@ -10,6 +13,8 @@ import {
 } from './styles'
 
 export default function Rehabilitation() {
+  const router = useRouter()
+
   return (
     <>
       <Head>
@@ -103,6 +108,13 @@ export default function Rehabilitation() {
               </ListItem>
             </UnorderedList>
           </Main>
+
+          <Footer>
+            <Button onClick={() => router.back()}>
+              <ArrowLeft />
+              Voltar para Página Anterior
+            </Button>
+          </Footer>
         </MainSection>
       </Container>
     </>

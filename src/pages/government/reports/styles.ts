@@ -96,14 +96,13 @@ const commonButtonStyle = {
   gap: '$2',
   height: 46,
   justifyContent: 'center',
-  marginRight: '$4',
   minWidth: 150,
   padding: '0 $4',
   textDecoration: 'none',
 
-  // '&:not(:disabled):hover': {
-  //   filter: 'opacity(80%)',
-  // },
+  '&:not(:disabled):hover': {
+    filter: 'opacity(80%)',
+  },
 }
 
 export const DownloadCSVButton = styled(CSVLink, commonButtonStyle)

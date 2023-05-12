@@ -6,11 +6,6 @@ export function getAPIVagasPCDClient(ctx?: any) {
     baseURL: process.env.NEXT_PUBLIC_API_URL,
   })
 
-  console.log(0, process.env)
-  console.log(1, process.env.NEXT_PUBLIC_API_URL)
-  console.log(2, process.env.NEXT_PUBLIC_API_URL)
-  console.log(3, apiVagasPCD.getUri())
-
   const { 'vagasPCD.token': token } = parseCookies(ctx)
 
   if (token) {

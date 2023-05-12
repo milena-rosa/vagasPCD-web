@@ -2,7 +2,7 @@ import { Job } from '@/@types/job'
 import { Role } from '@/@types/user'
 import Header from '@/components/Header'
 import { apiVagasPCD } from '@/services/apiVagasPCD'
-import { Heading } from '@vagaspcd-ui/react'
+import { Heading, Text } from '@vagaspcd-ui/react'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { parseCookies } from 'nookies'
@@ -13,14 +13,19 @@ import { Container, MainSection } from './styles'
 
 export default function OpenJobs() {
   const [data, setData] = useState<Job[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
+    setIsLoading(true)
     const loadOpenJobs = async () => {
       const response = await apiVagasPCD.get('/jobs/open')
       setData(response.data)
     }
     loadOpenJobs()
+    setIsLoading(false)
   }, [])
+
+  if (isLoading) return <Heading>Carregando...</Heading>
 
   return (
     <>
@@ -34,7 +39,11 @@ export default function OpenJobs() {
         <MainSection>
           <Heading size="md">Vagas abertas</Heading>
 
-          <JobList data={data} />
+          {data ? (
+            <JobList data={data} />
+          ) : (
+            <Text>Nenhuma vaga cadastrada</Text>
+          )}
         </MainSection>
       </Container>
     </>

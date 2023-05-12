@@ -2,10 +2,14 @@ import axios from 'axios'
 import { parseCookies } from 'nookies'
 
 export function getAPIVagasPCDClient(ctx?: any) {
-  console.log(process.env.HOST)
   const apiVagasPCD = axios.create({
-    baseURL: process.env.HOST,
+    baseURL: process.env.NEXT_PUBLIC_API_URL,
   })
+
+  console.log(0, process.env)
+  console.log(1, process.env.NEXT_PUBLIC_API_URL)
+  console.log(2, process.env.NEXT_PUBLIC_API_URL)
+  console.log(3, apiVagasPCD.getUri())
 
   const { 'vagasPCD.token': token } = parseCookies(ctx)
 

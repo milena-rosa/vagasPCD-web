@@ -17,11 +17,6 @@ export default function OpenJobs() {
   useEffect(() => {
     const loadOpenJobs = async () => {
       const response = await apiVagasPCD.get('/jobs/open')
-      console.log(
-        '%copen.page.tsx line:20 response.data',
-        'color: white; background-color: #007acc;',
-        response.data,
-      )
       setData(response.data)
     }
     loadOpenJobs()

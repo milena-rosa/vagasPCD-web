@@ -54,7 +54,6 @@ export default function JobApplications() {
   if (isLoading) return <Heading>Carregando...</Heading>
   if (!data) return <Heading>Nenhum candidato para esta vaga...</Heading>
 
-  console.log(data)
   return (
     <>
       <Head>

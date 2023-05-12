@@ -7,7 +7,6 @@ import {
   Container,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   HeaderItem,
 } from './styles'
 
@@ -33,7 +32,7 @@ export default function CompanyHeader() {
               <UserGear size={18} />
               <span>Editar perfil</span>
             </DropdownMenuItem> */}
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator /> */}
             <DropdownMenuItem onClick={() => signOut()}>
               <SignOut size={18} />
               <span>Sair</span>

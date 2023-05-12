@@ -65,7 +65,7 @@ export default function JobApplications() {
         <MainSection>
           <Heading size="md">Candidatos</Heading>
 
-          {data.candidates.length ? (
+          {data?.candidates?.length ? (
             <CandidatesList data={data.candidates} />
           ) : (
             <Text>Nenhum currículo enviado</Text>

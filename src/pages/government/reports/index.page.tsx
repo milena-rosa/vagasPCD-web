@@ -62,7 +62,7 @@ export default function Reports() {
             Emissão de Relatórios
           </Heading>
 
-          {data.length ? (
+          {data?.length ? (
             data.map((item) => (
               <CompanyGrid key={item.company_id}>
                 <GridArea area="name">

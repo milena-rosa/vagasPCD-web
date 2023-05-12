@@ -82,7 +82,7 @@ export default function Jobs() {
           </SearchBox>
 
           <JobItemsBox>
-            {jobs.length === 0 ? (
+            {jobs?.length === 0 ? (
               <Text>Nenhuma vaga encontrada</Text>
             ) : (
               jobs.map((job) => (

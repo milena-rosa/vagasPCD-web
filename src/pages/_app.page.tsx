@@ -1,6 +1,7 @@
 import MainLayout from '@/components/layouts/MainLayout'
 import { AppProvider } from '@/contexts'
 import { globalStyles } from '@/styles/global'
+import VLibras from '@djpfs/react-vlibras'
 import { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import { ReactElement, ReactNode } from 'react'
@@ -22,6 +23,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <>
+      <VLibras />
       <AppProvider>
         <MainLayout>{getLayout(<Component {...pageProps} />)}</MainLayout>
       </AppProvider>

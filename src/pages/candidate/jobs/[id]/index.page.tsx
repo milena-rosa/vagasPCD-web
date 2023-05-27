@@ -65,6 +65,13 @@ export default function JobPage() {
     }
   }
 
+  console.log(
+    '%cindex.page.tsx line:68 isAuthenticated && user?.role !== Role.CANDIDATE',
+    'color: white; background-color: #007acc;',
+    !isAuthenticated || user?.role?.toLowerCase() !== Role.CANDIDATE,
+    user?.role?.toLowerCase(),
+    Role.CANDIDATE,
+  )
   if (!job || !company) {
     return <Heading>Carregando...</Heading>
   }
@@ -149,7 +156,9 @@ export default function JobPage() {
 
           <Button
             onClick={handleSendResume}
-            disabled={isAuthenticated && user?.role !== Role.CANDIDATE}
+            disabled={
+              !isAuthenticated || user?.role?.toLowerCase() !== Role.CANDIDATE
+            }
           >
             <ReadCvLogo />
             Enviar Currículo
